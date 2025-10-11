@@ -61,17 +61,18 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params,
 }: {
   children: React.ReactNode
-  params: { locale?: string }
+  params: Promise<{ locale?: string } | undefined>
 }) {
+  const { locale: localeFromParams } = (await params) ?? {}
   const basePath = process.env.BASE_PATH || ''
   const initialLocale =
-    params?.locale && isLocale(params.locale)
-      ? params.locale
+    localeFromParams && isLocale(localeFromParams)
+      ? localeFromParams
       : normalizeLocale(siteMetadata.defaultLocale)
   const localizedMetadata = getSiteMetadata(initialLocale)
 
