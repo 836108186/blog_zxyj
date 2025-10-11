@@ -1,6 +1,6 @@
 import { resolveLocaleParam } from '@/lib/i18n'
 
-import { createBlogListingMetadata } from '../../../(site)/blog/page'
+import { createBlogListingMetadata } from '../../../(site)/blog/metadata'
 
 export { default } from '../../../(site)/blog/page'
 

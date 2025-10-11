@@ -1,16 +1,12 @@
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
-import { genPageMetadata } from 'app/seo'
+import { blogListingMetadata, createBlogListingMetadata } from './metadata'
 import ListLayout from '@/layouts/ListLayoutWithTags'
 import { getDocumentLocale, resolveLocaleParam } from '@/lib/i18n'
 
 const POSTS_PER_PAGE = 5
 
-export function createBlogListingMetadata(locale?: string) {
-  return genPageMetadata({ title: 'Blog', locale })
-}
-
-export const metadata = createBlogListingMetadata()
+export const metadata = blogListingMetadata
 
 export default async function BlogPage({ params }: { params?: { locale?: string } }) {
   const locale = resolveLocaleParam(params)
