@@ -10,7 +10,7 @@ const ABOUT_TITLES: Record<Locale, string> = {
   zh: '关于',
 }
 
-export function createAboutMetadata(locale?: string | null) {
+function createAboutMetadata(locale?: string | null) {
   const normalized = normalizeLocale(locale)
   return genPageMetadata({ title: ABOUT_TITLES[normalized], locale: normalized })
 }
