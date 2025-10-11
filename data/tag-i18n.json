@@ -1,0 +1,20 @@
+{
+  "next-js": { "en": "Next.js", "zh": "Next.js" },
+  "tailwind": { "en": "Tailwind CSS", "zh": "Tailwind CSS" },
+  "guide": { "en": "Guide", "zh": "指南" },
+  "feature": { "en": "Feature", "zh": "功能" },
+  "features": { "en": "Features", "zh": "功能" },
+  "multi-author": { "en": "Multi-author", "zh": "多作者" },
+  "hello": { "en": "Hello", "zh": "你好" },
+  "math": { "en": "Math", "zh": "数学" },
+  "ols": { "en": "OLS", "zh": "最小二乘" },
+  "github": { "en": "GitHub", "zh": "GitHub" },
+  "writings": { "en": "Writings", "zh": "随笔" },
+  "book": { "en": "Book", "zh": "书籍" },
+  "reflection": { "en": "Reflection", "zh": "反思" },
+  "holiday": { "en": "Holiday", "zh": "假期" },
+  "canada": { "en": "Canada", "zh": "加拿大" },
+  "images": { "en": "Images", "zh": "图片" },
+  "markdown": { "en": "Markdown", "zh": "Markdown" },
+  "code": { "en": "Code", "zh": "代码" }
+}
