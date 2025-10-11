@@ -9,6 +9,7 @@ import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import TableOfContents from '@/components/TableOfContents'
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 const discussUrl = (path) =>
@@ -30,7 +31,7 @@ interface LayoutProps {
 }
 
 export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
-  const { filePath, path, slug, date, title, tags, lang } = content
+  const { filePath, path, slug, date, title, tags, lang, toc } = content
   const locale = (lang ?? 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en'
   const pathSegments = path.split('/').filter(Boolean)
   if (locale !== 'zh' && pathSegments[0] === locale) {
@@ -115,61 +116,62 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   <Comments slug={slug} />
                 </div>
               )}
+              {(next || prev) && (
+                <nav className="flex justify-between py-4 text-sm font-medium text-gray-700 xl:py-8 dark:text-gray-300">
+                  {prev && prev.path && (
+                    <div>
+                      <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                        Previous Article
+                      </h2>
+                      <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                        <Link href={`/${prev.path}`} locale={locale}>
+                          {prev.title}
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                  {next && next.path && (
+                    <div className="text-right xl:text-left">
+                      <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                        Next Article
+                      </h2>
+                      <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                        <Link href={`/${next.path}`} locale={locale}>
+                          {next.title}
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </nav>
+              )}
             </div>
-            <footer>
-              <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
-                {tags && (
-                  <div className="py-4 xl:py-8">
+            <aside className="pt-6 text-sm leading-5 font-medium xl:col-span-1 xl:row-span-2 xl:pt-11">
+              <div className="space-y-8 xl:sticky xl:top-32 xl:h-fit">
+                {tags && tags.length > 0 && (
+                  <div>
                     <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
                       Tags
                     </h2>
-                    <div className="flex flex-wrap">
+                    <div className="mt-4 flex flex-wrap gap-2">
                       {tags.map((tag) => (
                         <Tag key={tag} text={tag} locale={locale} />
                       ))}
                     </div>
                   </div>
                 )}
-                {(next || prev) && (
-                  <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
-                    {prev && prev.path && (
-                      <div>
-                        <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                          Previous Article
-                        </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${prev.path}`} locale={locale}>
-                            {prev.title}
-                          </Link>
-                        </div>
-                      </div>
-                    )}
-                    {next && next.path && (
-                      <div>
-                        <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                          Next Article
-                        </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${next.path}`} locale={locale}>
-                            {next.title}
-                          </Link>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+                <TableOfContents toc={toc} locale={locale} />
+                <div>
+                  <Link
+                    href={`/${basePath}`}
+                    locale={locale}
+                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                    aria-label="Back to the blog"
+                  >
+                    &larr; Back to the blog
+                  </Link>
+                </div>
               </div>
-              <div className="pt-4 xl:pt-8">
-                <Link
-                  href={`/${basePath}`}
-                  locale={locale}
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                  aria-label="Back to the blog"
-                >
-                  &larr; Back to the blog
-                </Link>
-              </div>
-            </footer>
+            </aside>
           </div>
         </div>
       </article>
