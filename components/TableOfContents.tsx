@@ -34,7 +34,7 @@ export default function TableOfContents({ toc, locale = 'en' }: TableOfContentsP
             <li key={heading.url} className={indentClass}>
               <Link
                 href={heading.url}
-                className="text-gray-700 transition-colors hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400"
+                className="hover:text-primary-500 dark:hover:text-primary-400 text-gray-700 transition-colors dark:text-gray-300"
               >
                 {heading.value}
               </Link>

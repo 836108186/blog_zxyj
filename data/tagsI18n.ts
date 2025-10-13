@@ -24,10 +24,7 @@ export function getTagLabel(tag: string, locale: string) {
   const keyLower = tag.toLowerCase()
   const keySlug = slugify(tag)
 
-  const entry =
-    TAG_I18N[keyExact] ||
-    TAG_I18N[keyLower] ||
-    TAG_I18N[keySlug]
+  const entry = TAG_I18N[keyExact] || TAG_I18N[keyLower] || TAG_I18N[keySlug]
 
   const lang = locale?.startsWith('zh') ? 'zh' : 'en'
   return entry?.[lang] ?? tag

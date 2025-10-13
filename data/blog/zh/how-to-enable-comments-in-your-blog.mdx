@@ -2,10 +2,12 @@
 title: 个人博客开启评论功能（Giscus 完整指南）
 lang: 'zh'
 date: '2025-10-11'
-tags: ["Next.js", "Tailwind", "Giscus", "Blog"]
+tags: ['Next.js', 'Tailwind', 'Giscus', 'Blog']
 summary: '之前一直想在博客里加个评论区，但不想用太复杂的系统。偶然发现 Giscus，用 GitHub 账户就能评论，而且外观和集成都很方便。这篇文章分享了我给博客添加 Giscus 评论功能的完整过程'
 ---
+
 ## 前言
+
 在尝试了 **Hugo** 与 **Notion** 的博客方案后，我决定自己动手搭建一个博客项目。  
 项目仓库地址 👉 [https://github.com/836108186/blog_zxyj](https://github.com/836108186/blog_zxyj)
 
@@ -15,30 +17,38 @@ summary: '之前一直想在博客里加个评论区，但不想用太复杂的�
 
 于是我对比了多种评论系统（如 Disqus、Utterances、Gitalk 等），最终选择了 **Giscus** —— 一个基于 GitHub Discussions 的无后端评论方案。
 以下是我为博客启用 Giscus 的完整记录与避坑指南。
+
 ### 创建仓库
+
 使用 Giscus 前，你需要先有一个 **GitHub 仓库**。
 如果你和我一样使用 **Next.js Starter Blog**，可以直接点击仓库右上角的 **“Use this template”** 来快速创建自己的博客仓库。如果没有的话就只能动动大家的小手创建一下了。
 ![](/blog/how-to-enable-comments-in-your-blog/20251011151839.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011151804.png)
 
-
 ## 安装giscus
+
 要让访客能发表评论，必须先在 GitHub 上安装 **Giscus App**。
+
 1. 打开链接：[https://github.com/apps/giscus](https://github.com/apps/giscus)
 2. 点击 **Install**（若已安装则显示 **Configure**）
 3. 选择：
-    - **仅安装在指定仓库**（推荐：选择你的博客仓库）
-    - 或 **安装在所有仓库**（如果有多个博客项目）
+   - **仅安装在指定仓库**（推荐：选择你的博客仓库）
+   - 或 **安装在所有仓库**（如果有多个博客项目）
 4. 安装后，可在 GitHub → Settings → Applications 中重新配置。
+
 #### 参考安装过程截图：
+
 ![Pastedimage20251011151804](/blog/how-to-enable-comments-in-your-blog/20251011151839.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152642.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152631.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152856.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152938.png)
+
 ## 开启giscsus功能
+
 安装完成后，访问 [https://giscus.app/zh-CN](https://giscus.app/zh-CN)。
 在页面中：
+
 1. 选择你的仓库；
 2. 选择一个 **Discussion 分类**（如 “General”）；
 3. 复制自动生成的 **`<script>` 代码**；
@@ -50,9 +60,9 @@ summary: '之前一直想在博客里加个评论区，但不想用太复杂的�
 
 ## 排查常见问题
 
-|问题|原因|解决方案|
-|---|---|---|
-|显示提示“giscus app 未安装”|没有给目标仓库安装 Giscus App|按上面第一步安装|
-|评论框加载为空白|没启用 Discussions 功能|仓库 Settings → 勾选 Discussions|
-|“Error: Bad credentials”|repo、repo_id 配置不匹配|到 giscus.app 重新生成配置|
-|页面加载慢或被屏蔽|GitHub API 被防火墙拦截|可考虑用代理或 Vercel 辅助中转|
+| 问题                        | 原因                          | 解决方案                         |
+| --------------------------- | ----------------------------- | -------------------------------- |
+| 显示提示“giscus app 未安装” | 没有给目标仓库安装 Giscus App | 按上面第一步安装                 |
+| 评论框加载为空白            | 没启用 Discussions 功能       | 仓库 Settings → 勾选 Discussions |
+| “Error: Bad credentials”    | repo、repo_id 配置不匹配      | 到 giscus.app 重新生成配置       |
+| 页面加载慢或被屏蔽          | GitHub API 被防火墙拦截       | 可考虑用代理或 Vercel 辅助中转   |

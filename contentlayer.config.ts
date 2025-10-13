@@ -44,7 +44,9 @@ const icon = fromHtmlIsomorphic(
 
 const SUPPORTED_CONTENT_LOCALES = ['zh', 'en']
 const BLOG_PATH_PREFIX = 'blog/'
-const DEFAULT_CONTENT_LOCALE = siteMetadata.defaultLocale?.toLowerCase().startsWith('zh') ? 'zh' : 'en'
+const DEFAULT_CONTENT_LOCALE = siteMetadata.defaultLocale?.toLowerCase().startsWith('zh')
+  ? 'zh'
+  : 'en'
 
 function isBlogDocument(doc: { _raw: { flattenedPath: string } }) {
   return doc._raw.flattenedPath.startsWith(BLOG_PATH_PREFIX)

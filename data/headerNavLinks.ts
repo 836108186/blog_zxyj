@@ -16,8 +16,7 @@ const headerNavLinksMap = {
 export type SupportedLocale = keyof typeof headerNavLinksMap
 
 export function getHeaderNavLinks(locale?: string) {
-  const key: SupportedLocale =
-    locale && locale.toLowerCase().startsWith('zh') ? 'zh' : 'en'
+  const key: SupportedLocale = locale && locale.toLowerCase().startsWith('zh') ? 'zh' : 'en'
   return headerNavLinksMap[key]
 }
 

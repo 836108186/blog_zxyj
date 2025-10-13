@@ -7,7 +7,5 @@ export default function Comments({ slug }: { slug: string }) {
   if (!siteMetadata.comments?.provider) {
     return null
   }
-  return (
-    <CommentsComponent commentsConfig={siteMetadata.comments} slug={slug} />
-  )
+  return <CommentsComponent commentsConfig={siteMetadata.comments} slug={slug} />
 }
