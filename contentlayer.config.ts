@@ -213,6 +213,7 @@ export const Authors = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'data',
+  contentDirExclude: ['tag-i18n.json'],
   documentTypes: [Blog, Authors],
   mdx: {
     cwd: process.cwd(),

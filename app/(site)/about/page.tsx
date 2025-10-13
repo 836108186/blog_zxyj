@@ -2,14 +2,13 @@ import { Authors, allAuthors } from 'contentlayer/generated'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { coreContent } from 'pliny/utils/contentlayer'
-import { genPageMetadata } from 'app/seo'
 import { DEFAULT_LOCALE, Locale, getDocumentLocale, resolveLocaleParam } from '@/lib/i18n'
 
 import { ABOUT_TITLES, createAboutMetadata } from './metadata'
 
 export const metadata = createAboutMetadata()
 
-type AboutPageParams = { params?: { locale?: string } }
+type AboutPageProps = { params?: { locale?: string } }
 
 function AboutPageContent({ locale }: { locale: Locale }) {
   const author = (allAuthors.find(
@@ -30,9 +29,11 @@ function AboutPageContent({ locale }: { locale: Locale }) {
   )
 }
 
-export default function Page({ params }: AboutPageParams = {}) {
-  const locale = resolveLocaleParam(params, DEFAULT_LOCALE)
+export default function Page(props: AboutPageProps) {
+  const locale = resolveLocaleParam(props?.params, DEFAULT_LOCALE)
   return <AboutPageContent locale={locale} />
 }
 
 export { AboutPageContent }
+
+export { createAboutMetadata } from './metadata'
