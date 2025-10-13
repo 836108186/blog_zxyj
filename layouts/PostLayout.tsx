@@ -67,7 +67,7 @@ export default function PostLayout({
               </div>
             </div>
           </header>
-          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
+          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-[220px_minmax(0,1fr)_220px] xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
             <dl className="pt-6 pb-10 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
               <dt className="sr-only">Authors</dt>
               <dd>
@@ -105,7 +105,7 @@ export default function PostLayout({
                 </ul>
               </dd>
             </dl>
-            <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
+            <div className="divide-y divide-gray-200 xl:col-span-1 xl:col-start-2 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
               <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
               {siteMetadata.comments && (
                 <div
@@ -113,6 +113,34 @@ export default function PostLayout({
                   id="comment"
                 >
                   <Comments slug={slug} />
+                </div>
+              )}
+              {recommendations.length > 0 && (
+                <div className="space-y-4 pt-6">
+                  <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                    {recommendationsHeading}
+                  </h2>
+                  <ul className="grid gap-4 sm:grid-cols-2">
+                    {recommendations.map((post) => (
+                      <li
+                        key={`footer-${post.path}`}
+                        className="hover:border-primary-500 dark:hover:border-primary-400 rounded-lg border border-gray-200 p-4 transition-colors dark:border-gray-700"
+                      >
+                        <Link
+                          href={`/${post.path}`}
+                          locale={locale}
+                          className="hover:text-primary-600 dark:hover:text-primary-400 text-base font-semibold text-gray-900 dark:text-gray-100"
+                        >
+                          {post.title}
+                        </Link>
+                        {post.summary && (
+                          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                            {post.summary}
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
               {(next || prev) && (
@@ -144,7 +172,7 @@ export default function PostLayout({
                 </nav>
               )}
             </div>
-            <aside className="pt-6 text-sm leading-5 font-medium xl:col-span-1 xl:row-span-2 xl:pt-11">
+            <aside className="pt-6 text-sm leading-5 font-medium xl:col-span-1 xl:col-start-3 xl:row-span-2 xl:pt-11">
               <div className="space-y-8 xl:sticky xl:top-32 xl:h-fit">
                 {tags && tags.length > 0 && (
                   <div>
@@ -166,7 +194,7 @@ export default function PostLayout({
                     </h2>
                     <ul className="mt-4 space-y-3">
                       {recommendations.map((post) => (
-                        <li key={post.path}>
+                        <li key={`sidebar-${post.path}`}>
                           <Link
                             href={`/${post.path}`}
                             locale={locale}
