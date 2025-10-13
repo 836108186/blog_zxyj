@@ -11,10 +11,6 @@ import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import TableOfContents from '@/components/TableOfContents'
 
-const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
-
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
   year: 'numeric',
@@ -27,17 +23,27 @@ interface LayoutProps {
   authorDetails: CoreContent<Authors>[]
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
+  recommendedPosts?: CoreContent<Blog>[]
   children: ReactNode
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
-  const { filePath, path, slug, date, title, tags, lang, toc } = content
+export default function PostLayout({
+  content,
+  authorDetails,
+  next,
+  prev,
+  recommendedPosts,
+  children,
+}: LayoutProps) {
+  const { path, slug, date, title, tags, lang, toc } = content
   const locale = (lang ?? 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en'
   const pathSegments = path.split('/').filter(Boolean)
   if (locale !== 'zh' && pathSegments[0] === locale) {
     pathSegments.shift()
   }
   const basePath = pathSegments[0] ?? 'blog'
+  const recommendations = recommendedPosts ?? []
+  const recommendationsHeading = locale === 'zh' ? '推荐阅读' : 'Recommended Reading'
 
   return (
     <SectionContainer>
@@ -101,13 +107,6 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             </dl>
             <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
               <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
-              <div className="pt-6 pb-6 text-sm text-gray-700 dark:text-gray-300">
-                <Link href={discussUrl(path)} rel="nofollow">
-                  Discuss on Twitter
-                </Link>
-                {` • `}
-                <Link href={editUrl(filePath)}>View on GitHub</Link>
-              </div>
               {siteMetadata.comments && (
                 <div
                   className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300"
@@ -144,6 +143,31 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   )}
                 </nav>
               )}
+              {recommendations.length > 0 && (
+                <div className="py-8">
+                  <h2 className="text-sm tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                    {recommendationsHeading}
+                  </h2>
+                  <div className="mt-4 grid gap-6 sm:grid-cols-2">
+                    {recommendations.map((post) => (
+                      <article key={post.path} className="space-y-2">
+                        <h3 className="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">
+                          <Link
+                            href={`/${post.path}`}
+                            locale={locale}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                          >
+                            {post.title}
+                          </Link>
+                        </h3>
+                        {post.summary && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{post.summary}</p>
+                        )}
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             <aside className="pt-6 text-sm leading-5 font-medium xl:col-span-1 xl:row-span-2 xl:pt-11">
               <div className="space-y-8 xl:sticky xl:top-32 xl:h-fit">
@@ -160,6 +184,26 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </div>
                 )}
                 <TableOfContents toc={toc} locale={locale} />
+                {recommendations.length > 0 && (
+                  <div>
+                    <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                      {recommendationsHeading}
+                    </h2>
+                    <ul className="mt-4 space-y-3">
+                      {recommendations.map((post) => (
+                        <li key={post.path}>
+                          <Link
+                            href={`/${post.path}`}
+                            locale={locale}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                          >
+                            {post.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <div>
                   <Link
                     href={`/${basePath}`}
