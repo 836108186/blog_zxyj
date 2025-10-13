@@ -1,13 +1,13 @@
 {
-  "en": {
-    "blog": 1,
-    "welcome": 1,
-    "i18n": 1
-  },
   "zh": {
     "nextjs": 1,
     "tailwind": 1,
     "giscus": 1,
     "blog": 1
+  },
+  "en": {
+    "blog": 1,
+    "welcome": 1,
+    "i18n": 1
   }
 }
