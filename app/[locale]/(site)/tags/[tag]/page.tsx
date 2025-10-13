@@ -9,16 +9,14 @@ import { getSiteMetadata } from '@/lib/site'
 
 const createTagDetailMetadata = (tag: string, locale?: string) => {
   const localizedSite = getSiteMetadata(locale)
+  const decodedTag = decodeURIComponent(tag)
+  const tagSegment = encodeURIComponent(decodedTag)
   return genPageMetadata({
-    title: tag,
-    description: `${localizedSite.title} ${tag} tagged content`,
+    title: decodedTag,
+    description: `${localizedSite.title} ${decodedTag} tagged content`,
     locale,
-    alternates: {
-      canonical: './',
-      types: {
-        'application/rss+xml': `${localizedSite.siteUrl}/tags/${tag}/feed.xml`,
-      },
-    },
+    path: `tags/${tagSegment}`,
+    rssPath: `tags/${tagSegment}/feed.xml`,
   })
 }
 

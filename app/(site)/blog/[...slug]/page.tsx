@@ -39,6 +39,10 @@ export async function generateMetadata(props: {
   }
 
   const site = getSiteMetadata(post.lang)
+  const normalizedSiteUrl = site.siteUrl.replace(/\/+$/, '')
+  const postPath = `blog/${post.slug}`
+  const postUrl = `${normalizedSiteUrl}/${postPath}`
+  const feedUrl = `${normalizedSiteUrl}/feed.xml`
 
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.lastmod || post.date).toISOString()
@@ -64,7 +68,7 @@ export async function generateMetadata(props: {
       type: 'article',
       publishedTime: publishedAt,
       modifiedTime: modifiedAt,
-      url: './',
+      url: postUrl,
       images: ogImages,
       authors: authors.length > 0 ? authors : [site.author],
     },
@@ -73,6 +77,12 @@ export async function generateMetadata(props: {
       title: post.title,
       description: post.summary,
       images: imageList,
+    },
+    alternates: {
+      canonical: postUrl,
+      types: {
+        'application/rss+xml': feedUrl,
+      },
     },
   }
 }

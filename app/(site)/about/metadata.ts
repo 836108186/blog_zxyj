@@ -9,5 +9,9 @@ export const ABOUT_TITLES: Record<Locale, string> = {
 
 export function createAboutMetadata(locale?: string | null) {
   const normalized = normalizeLocale(locale)
-  return genPageMetadata({ title: ABOUT_TITLES[normalized], locale: normalized })
+  return genPageMetadata({
+    title: ABOUT_TITLES[normalized],
+    locale: normalized,
+    path: 'about',
+  })
 }
