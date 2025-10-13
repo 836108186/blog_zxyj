@@ -21,3 +21,6 @@ export default function AboutPageContent({ locale }: { locale: Locale }) {
     </AuthorLayout>
   )
 }
+
+// 确保提供具名导出，避免 "has no exported member 'AboutPageContent'" 的构建错误
+export { AboutPageContent }
