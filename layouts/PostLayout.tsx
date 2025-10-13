@@ -143,31 +143,6 @@ export default function PostLayout({
                   )}
                 </nav>
               )}
-              {recommendations.length > 0 && (
-                <div className="py-8">
-                  <h2 className="text-sm tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                    {recommendationsHeading}
-                  </h2>
-                  <div className="mt-4 grid gap-6 sm:grid-cols-2">
-                    {recommendations.map((post) => (
-                      <article key={post.path} className="space-y-2">
-                        <h3 className="text-base leading-6 font-semibold text-gray-900 dark:text-gray-100">
-                          <Link
-                            href={`/${post.path}`}
-                            locale={locale}
-                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          >
-                            {post.title}
-                          </Link>
-                        </h3>
-                        {post.summary && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{post.summary}</p>
-                        )}
-                      </article>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
             <aside className="pt-6 text-sm leading-5 font-medium xl:col-span-1 xl:row-span-2 xl:pt-11">
               <div className="space-y-8 xl:sticky xl:top-32 xl:h-fit">
