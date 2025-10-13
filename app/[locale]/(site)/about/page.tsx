@@ -1,6 +1,6 @@
 import { resolveLocaleParam } from '@/lib/i18n'
 
-import { createAboutMetadata } from '../../../(site)/about/page'
+import { createAboutMetadata } from '../../../(site)/about/metadata'
 
 export { default } from '../../../(site)/about/page'
 

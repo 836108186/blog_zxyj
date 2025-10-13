@@ -3,17 +3,9 @@ import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { coreContent } from 'pliny/utils/contentlayer'
 import { genPageMetadata } from 'app/seo'
-import { Locale, getDocumentLocale, normalizeLocale, resolveLocaleParam } from '@/lib/i18n'
+import { Locale, getDocumentLocale, resolveLocaleParam } from '@/lib/i18n'
 
-const ABOUT_TITLES: Record<Locale, string> = {
-  en: 'About',
-  zh: '关于',
-}
-
-function createAboutMetadata(locale?: string | null) {
-  const normalized = normalizeLocale(locale)
-  return genPageMetadata({ title: ABOUT_TITLES[normalized], locale: normalized })
-}
+import { ABOUT_TITLES, createAboutMetadata } from './metadata'
 
 export const metadata = createAboutMetadata()
 
