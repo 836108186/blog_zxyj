@@ -6,10 +6,11 @@ import { getDocumentLocale, resolveLocaleParam } from '@/lib/i18n'
 
 const POSTS_PER_PAGE = 5
 
-export const metadata = blogListingMetadata
+type BlogPageParams = { params: Promise<{ locale?: string }> }
 
-export default async function BlogPage({ params }: { params?: { locale?: string } }) {
-  const locale = resolveLocaleParam(params)
+export default async function BlogPage({ params }: BlogPageParams) {
+  const resolvedParams = await params
+  const locale = resolveLocaleParam(resolvedParams)
   const allPosts = allCoreContent(sortPosts(allBlogs))
   const localizedPosts = allPosts.filter((post) => getDocumentLocale(post.lang) === locale)
   const pageNumber = 1
@@ -28,4 +29,10 @@ export default async function BlogPage({ params }: { params?: { locale?: string 
       title="All Posts"
     />
   )
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale?: string }> }) {
+  const resolvedParams = await params
+  const locale = resolveLocaleParam(resolvedParams)
+  return createBlogListingMetadata(locale)
 }

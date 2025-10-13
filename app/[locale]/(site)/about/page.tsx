@@ -1,6 +1,6 @@
 import { resolveLocaleParam } from '@/lib/i18n'
 
-import { AboutPageContent } from '../../../(site)/about/page'
+import { AboutPageContent } from '../../../(site)/about/AboutPageContent'
 import { createAboutMetadata } from '../../../(site)/about/metadata'
 
 export default async function Page(props: { params: Promise<{ locale: string }> }) {

@@ -13,7 +13,8 @@ const getLocalizedPosts = (locale?: string) => {
   )
 }
 
-export const getBlogPageStaticParams = (locale?: string) => {
+// 移除 export 关键字，将其改为内部函数
+const getBlogPageStaticParams = (locale?: string) => {
   const posts = getLocalizedPosts(locale)
   const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE))
   return Array.from({ length: totalPages }, (_, i) => ({ page: (i + 1).toString() }))

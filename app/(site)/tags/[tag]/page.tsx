@@ -10,7 +10,7 @@ import { getSiteMetadata } from '@/lib/site'
 
 const POSTS_PER_PAGE = 5
 
-export function createTagDetailMetadata(tag: string, locale?: string) {
+const createTagDetailMetadata = (tag: string, locale?: string) => {
   const localizedSite = getSiteMetadata(locale)
   return genPageMetadata({
     title: tag,
@@ -25,17 +25,19 @@ export function createTagDetailMetadata(tag: string, locale?: string) {
   })
 }
 
-export async function generateMetadata(props: {
-  params: Promise<{ tag: string }>
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ tag: string; locale?: string }>
 }): Promise<Metadata> {
-  const params = await props.params
-  const tag = decodeURI(params.tag)
-  return createTagDetailMetadata(tag)
+  const resolvedParams = await params
+  return createTagDetailMetadata(resolvedParams.tag, resolvedParams.locale)
 }
 
 const countsByLocale = tagData as Record<string, Record<string, number>>
 
-export const getTagStaticParams = (locale?: string) => {
+// 移除 export 关键字，将其改为内部函数
+const getTagStaticParams = (locale?: string) => {
   const targetLocale = normalizeLocale(locale)
   const tags = countsByLocale[targetLocale] ?? {}
   return Object.keys(tags).map((tag) => ({
