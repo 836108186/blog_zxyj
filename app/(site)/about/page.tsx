@@ -3,14 +3,15 @@ import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { coreContent } from 'pliny/utils/contentlayer'
 import { genPageMetadata } from 'app/seo'
-import { Locale, getDocumentLocale, resolveLocaleParam } from '@/lib/i18n'
+import { DEFAULT_LOCALE, Locale, getDocumentLocale, resolveLocaleParam } from '@/lib/i18n'
 
 import { ABOUT_TITLES, createAboutMetadata } from './metadata'
 
 export const metadata = createAboutMetadata()
 
-export default function Page(props?: { params?: { locale?: string } }) {
-  const locale = resolveLocaleParam(props?.params)
+type AboutPageParams = { params?: { locale?: string } }
+
+function AboutPageContent({ locale }: { locale: Locale }) {
   const author = (allAuthors.find(
     (p) => p.slug === 'default' && getDocumentLocale(p.lang) === locale
   ) ??
@@ -20,7 +21,6 @@ export default function Page(props?: { params?: { locale?: string } }) {
     throw new Error('Author profile "default" is missing. Please add data/authors/zh/default.mdx.')
   }
   const mainContent = coreContent(author)
-
   return (
     <>
       <AuthorLayout content={mainContent} title={ABOUT_TITLES[locale]}>
@@ -29,3 +29,10 @@ export default function Page(props?: { params?: { locale?: string } }) {
     </>
   )
 }
+
+export default function Page({ params }: AboutPageParams = {}) {
+  const locale = resolveLocaleParam(params, DEFAULT_LOCALE)
+  return <AboutPageContent locale={locale} />
+}
+
+export { AboutPageContent }
