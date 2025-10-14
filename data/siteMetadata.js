@@ -26,7 +26,7 @@ const siteMetadata = {
   theme: 'system', // system, dark or light
   siteUrl: 'https://blog.zixiaoyanji.com/',
   siteRepo: 'https://github.com/836108186/blog_zxyj',
-  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
+  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.jpg`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'szh836108186@gmail.com',
