@@ -101,113 +101,106 @@ export default function ListLayoutWithTags({
   const displayPosts = filteredInitialPosts.length > 0 ? filteredInitialPosts : filteredPosts
 
   return (
-    <>
-      <div>
+    <div className="mx-auto w-full max-w-6xl px-2 sm:px-4 xl:grid xl:grid-cols-[280px_minmax(0,1fr)] xl:items-start xl:gap-12">
+      <aside className="hidden max-w-[280px] min-w-[260px] self-start rounded-sm bg-gray-50 shadow-md xl:sticky xl:top-28 xl:block dark:bg-gray-900/70 dark:shadow-gray-800/40">
+        <div className="px-6 py-6">
+          {stripLocaleFromPath(pathname).startsWith('/blog') ? (
+            <h3 className="text-primary-500 font-bold uppercase">{t('allPostsLabel')}</h3>
+          ) : (
+            <Link
+              href={`/blog`}
+              locale={locale}
+              className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
+            >
+              {t('allPostsLabel')}
+            </Link>
+          )}
+          <ul className="mt-4 space-y-2">
+            {sortedTags.length === 0 && (
+              <p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">{t('noTags')}</p>
+            )}
+            {sortedTags.map((tagName) => {
+              const isActive =
+                decodeURI(stripLocaleFromPath(pathname).split('/tags/')[1] ?? '') === slug(tagName)
+              const label = getTagLabel(tagName, locale)
+              const count = localizedTagCounts[tagName]
+              return (
+                <li key={tagName}>
+                  {isActive ? (
+                    <h3 className="text-primary-500 inline px-3 py-2 text-sm font-bold uppercase">
+                      {`${label} (${count})`}
+                    </h3>
+                  ) : (
+                    <Link
+                      href={`/tags/${slug(tagName)}`}
+                      locale={locale}
+                      className="hover:text-primary-500 dark:hover:text-primary-500 px-3 py-2 text-sm font-medium text-gray-500 uppercase dark:text-gray-300"
+                      aria-label={t('viewTagged', { tag: label })}
+                    >
+                      {`${label} (${count})`}
+                    </Link>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </aside>
+      <div className="xl:col-start-2 xl:pl-2">
         <div className="pt-6 pb-6">
-          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:hidden sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
+          <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
             {title === 'All Posts' ? t('allPostsLabel') : title}
           </h1>
         </div>
-        <div className="flex sm:space-x-24">
-          <div className="hidden h-full max-h-screen max-w-[280px] min-w-[280px] flex-wrap overflow-auto rounded-sm bg-gray-50 pt-5 shadow-md sm:flex dark:bg-gray-900/70 dark:shadow-gray-800/40">
-            <div className="px-6 py-4">
-              {stripLocaleFromPath(pathname).startsWith('/blog') ? (
-                <h3 className="text-primary-500 font-bold uppercase">{t('allPostsLabel')}</h3>
-              ) : (
-                <Link
-                  href={`/blog`}
-                  locale={locale}
-                  className="hover:text-primary-500 dark:hover:text-primary-500 font-bold text-gray-700 uppercase dark:text-gray-300"
-                >
-                  {t('allPostsLabel')}
-                </Link>
-              )}
-              <ul>
-                {sortedTags.length === 0 && (
-                  <p className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
-                    {t('noTags')}
-                  </p>
-                )}
-                {sortedTags.map((tagName) => {
-                  const isActive =
-                    decodeURI(stripLocaleFromPath(pathname).split('/tags/')[1] ?? '') ===
-                    slug(tagName)
-                  const label = getTagLabel(tagName, locale)
-                  const count = localizedTagCounts[tagName]
-                  return (
-                    <li key={tagName} className="my-3">
-                      {isActive ? (
-                        <h3 className="text-primary-500 inline px-3 py-2 text-sm font-bold uppercase">
-                          {`${label} (${count})`}
-                        </h3>
-                      ) : (
+        <ul>
+          {displayPosts.map((post) => {
+            const { path, date, title, summary, tags } = post
+            return (
+              <li key={path} className="py-5">
+                <article className="flex flex-col space-y-2 xl:space-y-0">
+                  <dl>
+                    <dt className="sr-only">{t('publishedOn')}</dt>
+                    <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
+                      <time dateTime={date} suppressHydrationWarning>
+                        {formatDate(date, localizedSite.language)}
+                      </time>
+                    </dd>
+                  </dl>
+                  <div className="space-y-3">
+                    <div>
+                      <h2 className="text-2xl leading-8 font-bold tracking-tight">
                         <Link
-                          href={`/tags/${slug(tagName)}`}
+                          href={`/${path}`}
                           locale={locale}
-                          className="hover:text-primary-500 dark:hover:text-primary-500 px-3 py-2 text-sm font-medium text-gray-500 uppercase dark:text-gray-300"
-                          aria-label={t('viewTagged', { tag: label })}
+                          className="text-gray-900 dark:text-gray-100"
                         >
-                          {`${label} (${count})`}
+                          {title}
                         </Link>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          </div>
-          <div>
-            <ul>
-              {displayPosts.map((post) => {
-                const { path, date, title, summary, tags } = post
-                return (
-                  <li key={path} className="py-5">
-                    <article className="flex flex-col space-y-2 xl:space-y-0">
-                      <dl>
-                        <dt className="sr-only">{t('publishedOn')}</dt>
-                        <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                          <time dateTime={date} suppressHydrationWarning>
-                            {formatDate(date, localizedSite.language)}
-                          </time>
-                        </dd>
-                      </dl>
-                      <div className="space-y-3">
-                        <div>
-                          <h2 className="text-2xl leading-8 font-bold tracking-tight">
-                            <Link
-                              href={`/${path}`}
-                              locale={locale}
-                              className="text-gray-900 dark:text-gray-100"
-                            >
-                              {title}
-                            </Link>
-                          </h2>
-                          <div className="flex flex-wrap">
-                            {tags?.map((tag) => (
-                              <Tag
-                                key={tag}
-                                text={getTagLabel(tag, locale)}
-                                slugText={tag}
-                                locale={locale}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
-                          {summary}
-                        </div>
+                      </h2>
+                      <div className="flex flex-wrap">
+                        {tags?.map((tag) => (
+                          <Tag
+                            key={tag}
+                            text={getTagLabel(tag, locale)}
+                            slugText={tag}
+                            locale={locale}
+                          />
+                        ))}
                       </div>
-                    </article>
-                  </li>
-                )
-              })}
-            </ul>
-            {pagination && pagination.totalPages > 1 && (
-              <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
-            )}
-          </div>
-        </div>
+                    </div>
+                    <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                      {summary}
+                    </div>
+                  </div>
+                </article>
+              </li>
+            )
+          })}
+        </ul>
+        {pagination && pagination.totalPages > 1 && (
+          <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+        )}
       </div>
-    </>
+    </div>
   )
 }

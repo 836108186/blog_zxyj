@@ -1,9 +1,27 @@
 'use client'
 
 import { useI18n } from '@/app/providers/I18nProvider'
+import blogLocaleAvailability from '@/app/blog-locale-map.json'
 import { useRouter, usePathname } from 'next/navigation'
 
-import { localizePath, normalizeLocale, stripLocaleFromPath } from '@/lib/i18n'
+import { Locale, localizePath, normalizeLocale, stripLocaleFromPath } from '@/lib/i18n'
+
+const BLOG_LOCALE_MAP = blogLocaleAvailability as Record<string, Locale[]>
+const HOME_PATHS: Record<Locale, string> = {
+  zh: '/',
+  en: '/en',
+}
+
+function getBlogSlugFromPath(path: string): string | null {
+  if (!path.startsWith('/blog')) {
+    return null
+  }
+  const remainder = path.slice('/blog'.length)
+  if (!remainder || remainder === '/') {
+    return ''
+  }
+  return remainder.replace(/^\//, '')
+}
 
 export default function LocaleSwitch() {
   const { locale, setLocale } = useI18n()
@@ -15,6 +33,14 @@ export default function LocaleSwitch() {
     const basePath = stripLocaleFromPath(pathname || '/')
     const nextLocale = isZh ? 'en' : 'zh'
     setLocale(nextLocale)
+    const slug = getBlogSlugFromPath(basePath)
+    if (slug) {
+      const availableLocales = BLOG_LOCALE_MAP[slug]
+      if (!availableLocales || !availableLocales.includes(nextLocale)) {
+        router.push(HOME_PATHS[nextLocale])
+        return
+      }
+    }
     router.push(localizePath(basePath, nextLocale))
   }
   return (

@@ -23,6 +23,7 @@ type Messages = {
   paginationStatus: string // e.g. {current} of {total}
   allPostsLabel: string
   noTags: string
+  recommended: string
 }
 
 const messages: Record<Locale, Messages> = {
@@ -44,6 +45,7 @@ const messages: Record<Locale, Messages> = {
     paginationStatus: '{current} of {total}',
     allPostsLabel: 'All Posts',
     noTags: 'No tags found.',
+    recommended: 'Recommended Reading',
   },
   zh: {
     latest: '子小言记的的博客',
@@ -63,6 +65,7 @@ const messages: Record<Locale, Messages> = {
     paginationStatus: '{current} / {total}',
     allPostsLabel: '全部文章',
     noTags: '暂无标签。',
+    recommended: '推荐阅读',
   },
 }
 
