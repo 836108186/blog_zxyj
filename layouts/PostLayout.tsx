@@ -67,7 +67,7 @@ export default function PostLayout({
         </div>
       </header>
       <div className="space-y-10 xl:grid xl:grid-cols-[260px_minmax(0,48rem)_320px] xl:items-start xl:gap-12 xl:space-y-0">
-        <aside className="pt-6 pb-10 text-sm leading-5 xl:h-fit xl:border-r xl:border-gray-200 xl:pt-0 xl:pr-8 xl:pb-0 xl:dark:border-gray-700">
+        <aside className="pt-6 pb-10 text-sm leading-5 xl:sticky xl:top-24 xl:h-fit xl:border-r xl:border-gray-200 xl:pt-0 xl:pr-8 xl:pb-0 xl:dark:border-gray-700">
           <div className="space-y-10">
             <dl>
               <dt className="sr-only">Authors</dt>
