@@ -50,7 +50,7 @@ export default function PostLayout({
     <SectionContainer>
       <ScrollTopAndComment />
       <header className="pt-6 xl:pb-6">
-        <div className="space-y-1 text-center">
+        <div className="mx-auto max-w-3xl space-y-1 text-center">
           <dl className="space-y-10">
             <div>
               <dt className="sr-only">Published on</dt>
@@ -66,7 +66,7 @@ export default function PostLayout({
           </div>
         </div>
       </header>
-      <div className="space-y-10 xl:grid xl:grid-cols-[260px_minmax(0,1fr)_320px] xl:items-start xl:gap-12 xl:space-y-0">
+      <div className="space-y-10 xl:grid xl:grid-cols-[260px_minmax(0,48rem)_320px] xl:items-start xl:gap-12 xl:space-y-0">
         <aside className="pt-6 pb-10 text-sm leading-5 xl:h-fit xl:border-r xl:border-gray-200 xl:pt-0 xl:pr-8 xl:pb-0 xl:dark:border-gray-700">
           <div className="space-y-10">
             <dl>
@@ -131,7 +131,7 @@ export default function PostLayout({
             </div>
           </div>
         </aside>
-        <article className="xl:col-start-2 xl:max-w-none">
+        <article className="xl:col-start-2 xl:w-full xl:max-w-3xl">
           <div className="divide-y divide-gray-200 pb-8 dark:divide-gray-700">
             <div className="prose dark:prose-invert max-w-none pb-8">{children}</div>
             {(next || prev) && (
