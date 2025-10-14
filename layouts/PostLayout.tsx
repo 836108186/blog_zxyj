@@ -67,7 +67,7 @@ export default function PostLayout({
               </div>
             </div>
           </header>
-          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-[220px_minmax(0,1fr)_220px] xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
+          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-[220px_minmax(0,1fr)_260px] xl:gap-x-10 xl:divide-y-0 dark:divide-gray-700">
             <aside className="pt-6 pb-10 text-sm leading-5 xl:col-span-1 xl:row-span-2 xl:border-b xl:border-gray-200 xl:pt-11 xl:pb-0 xl:dark:border-gray-700">
               <div className="space-y-10 xl:sticky xl:top-32 xl:h-fit">
                 <dl>
@@ -132,7 +132,7 @@ export default function PostLayout({
                 </div>
               </div>
             </aside>
-            <div className="divide-y divide-gray-200 xl:col-span-1 xl:col-start-2 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
+            <div className="divide-y divide-gray-200 xl:col-span-1 xl:col-start-2 xl:row-span-2 xl:max-w-2xl xl:pb-0 dark:divide-gray-700">
               <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
               {siteMetadata.comments && (
                 <div
@@ -199,29 +199,64 @@ export default function PostLayout({
                 </nav>
               )}
             </div>
-            <aside className="pt-6 text-sm leading-5 font-medium xl:col-span-1 xl:col-start-3 xl:row-span-2 xl:pt-11">
+            <aside className="hidden pt-10 text-sm leading-5 xl:col-span-1 xl:col-start-3 xl:row-span-2 xl:block xl:pt-11">
               {recommendations.length > 0 && (
-                <div className="space-y-4 xl:sticky xl:top-32 xl:h-fit">
-                  <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                    {recommendationsHeading}
-                  </h2>
-                  <ul className="space-y-3">
-                    {recommendations.map((post) => (
-                      <li key={`sidebar-${post.path}`}>
-                        <Link
-                          href={`/${post.path}`}
-                          locale={locale}
-                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                        >
-                          {post.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="hidden space-y-6 xl:sticky xl:top-32 xl:flex xl:h-fit xl:flex-col">
+                  <div className="rounded-2xl border border-gray-200 bg-gray-50/80 p-6 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-gray-800/70">
+                    <h2 className="text-xs font-semibold tracking-wide text-gray-600 uppercase dark:text-gray-400">
+                      {recommendationsHeading}
+                    </h2>
+                    <ul className="mt-4 space-y-4">
+                      {recommendations.map((post) => (
+                        <li key={`sidebar-${post.path}`} className="group">
+                          <Link
+                            href={`/${post.path}`}
+                            locale={locale}
+                            className="group-hover:text-primary-600 dark:group-hover:text-primary-400 text-base font-semibold text-gray-900 transition-colors dark:text-gray-100"
+                          >
+                            {post.title}
+                          </Link>
+                          {post.summary && (
+                            <p className="mt-1 text-sm leading-6 text-gray-600 transition-colors group-hover:text-gray-700 dark:text-gray-300 dark:group-hover:text-gray-200">
+                              {post.summary}
+                            </p>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               )}
             </aside>
           </div>
+          {recommendations.length > 0 && (
+            <div className="space-y-4 pt-6 xl:hidden">
+              <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                {recommendationsHeading}
+              </h2>
+              <ul className="grid gap-4 sm:grid-cols-2">
+                {recommendations.map((post) => (
+                  <li
+                    key={`footer-${post.path}`}
+                    className="hover:border-primary-500 dark:hover:border-primary-400 rounded-lg border border-gray-200 p-4 transition-colors dark:border-gray-700"
+                  >
+                    <Link
+                      href={`/${post.path}`}
+                      locale={locale}
+                      className="hover:text-primary-600 dark:hover:text-primary-400 text-base font-semibold text-gray-900 dark:text-gray-100"
+                    >
+                      {post.title}
+                    </Link>
+                    {post.summary && (
+                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                        {post.summary}
+                      </p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </article>
     </SectionContainer>
