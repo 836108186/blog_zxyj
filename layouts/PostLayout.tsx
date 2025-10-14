@@ -66,7 +66,7 @@ export default function PostLayout({
           </div>
         </div>
       </header>
-      <div className="space-y-10 pt-10 xl:grid xl:grid-cols-[260px_minmax(0,1fr)_320px] xl:items-start xl:gap-12 xl:space-y-0 xl:border-t xl:border-gray-200 xl:pt-10 xl:dark:border-gray-700">
+      <div className="space-y-10 xl:grid xl:grid-cols-[260px_minmax(0,1fr)_320px] xl:items-start xl:gap-12 xl:space-y-0">
         <aside className="pt-6 pb-10 text-sm leading-5 xl:sticky xl:top-32 xl:h-fit xl:border-r xl:border-gray-200 xl:pt-0 xl:pr-8 xl:pb-0 xl:dark:border-gray-700">
           <div className="space-y-10">
             <dl>
@@ -133,7 +133,7 @@ export default function PostLayout({
         </aside>
         <article className="xl:col-start-2 xl:max-w-none">
           <div className="divide-y divide-gray-200 pb-8 dark:divide-gray-700">
-            <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
+            <div className="prose dark:prose-invert max-w-none pb-8">{children}</div>
             {(next || prev) && (
               <nav className="flex justify-between py-4 text-sm font-medium text-gray-700 xl:py-8 dark:text-gray-300">
                 {prev && prev.path && (
@@ -198,8 +198,8 @@ export default function PostLayout({
           )}
         </article>
         {recommendations.length > 0 && (
-          <aside className="hidden text-sm leading-5 xl:col-start-3 xl:block xl:w-full xl:max-w-xs xl:pt-6">
-            <div className="space-y-6 xl:sticky xl:top-32 xl:flex xl:h-fit xl:flex-col">
+          <aside className="hidden text-sm leading-5 xl:sticky xl:top-32 xl:col-start-3 xl:block xl:h-fit xl:w-full xl:max-w-xs">
+            <div className="space-y-6 xl:flex xl:h-fit xl:flex-col">
               <div className="rounded-2xl border border-gray-200 bg-gray-50/80 p-6 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-gray-800/70">
                 <h2 className="text-xs font-semibold tracking-wide text-gray-600 uppercase dark:text-gray-400">
                   {recommendationsHeading}
