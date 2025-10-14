@@ -31,16 +31,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: siteMetadata.title,
     description: siteMetadata.description,
-    url: './',
+    url: siteMetadata.siteUrl,
     siteName: siteMetadata.title,
     images: [siteMetadata.socialBanner],
     locale: 'en_US',
     type: 'website',
   },
   alternates: {
-    canonical: './',
+    canonical: siteMetadata.siteUrl,
     types: {
-      'application/rss+xml': `${siteMetadata.siteUrl}/feed.xml`,
+      'application/rss+xml': `${siteMetadata.siteUrl.replace(/\/+$/, '')}/feed.xml`,
     },
   },
   robots: {
@@ -75,6 +75,8 @@ export default async function RootLayout({
       ? localeFromParams
       : normalizeLocale(siteMetadata.defaultLocale)
   const localizedMetadata = getSiteMetadata(initialLocale)
+  const normalizedSiteUrl = localizedMetadata.siteUrl?.replace(/\/+$/, '')
+  const rssFeedUrl = normalizedSiteUrl ? `${normalizedSiteUrl}/feed.xml` : undefined
 
   return (
     <html
@@ -85,30 +87,44 @@ export default async function RootLayout({
       <link
         rel="apple-touch-icon"
         sizes="76x76"
-        href={`${basePath}/static/favicons/apple-touch-icon.png`}
+        href={`${basePath}/static/favicons/apple-touch-icon.jpg`}
       />
       <link
         rel="icon"
         type="image/png"
         sizes="32x32"
-        href={`${basePath}/static/favicons/favicon-32x32.png`}
+        href={`${basePath}/static/favicons/favicon-32x32.jpg`}
       />
       <link
         rel="icon"
         type="image/png"
         sizes="16x16"
-        href={`${basePath}/static/favicons/favicon-16x16.png`}
+        href={`${basePath}/static/favicons/favicon-16x16.jpg`}
       />
       <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
       <link
         rel="mask-icon"
-        href={`${basePath}/static/favicons/safari-pinned-tab.svg`}
+        href={`${basePath}/static/favicons/avatar.jpg`}
         color="#5bbad5"
       />
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
-      <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
+      {rssFeedUrl ? (
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${localizedMetadata.title} RSS Feed`}
+          href={rssFeedUrl}
+        />
+      ) : (
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${localizedMetadata.title} RSS Feed`}
+          href={`${basePath}/feed.xml`}
+        />
+      )}
       <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
         <I18nProvider initialLocale={initialLocale}>
           <ThemeProviders>

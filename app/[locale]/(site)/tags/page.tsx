@@ -9,6 +9,7 @@ const createTagListingMetadata = (locale?: string) => {
     title: 'Tags',
     description: 'Things I blog about',
     locale,
+    path: 'tags',
   })
 }
 

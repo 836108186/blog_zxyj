@@ -11,10 +11,6 @@ import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import TableOfContents from '@/components/TableOfContents'
 
-const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
-
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
   year: 'numeric',
@@ -27,17 +23,27 @@ interface LayoutProps {
   authorDetails: CoreContent<Authors>[]
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
+  recommendedPosts?: CoreContent<Blog>[]
   children: ReactNode
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
-  const { filePath, path, slug, date, title, tags, lang, toc } = content
+export default function PostLayout({
+  content,
+  authorDetails,
+  next,
+  prev,
+  recommendedPosts,
+  children,
+}: LayoutProps) {
+  const { path, slug, date, title, tags, lang, toc } = content
   const locale = (lang ?? 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en'
   const pathSegments = path.split('/').filter(Boolean)
   if (locale !== 'zh' && pathSegments[0] === locale) {
     pathSegments.shift()
   }
   const basePath = pathSegments[0] ?? 'blog'
+  const recommendations = recommendedPosts ?? []
+  const recommendationsHeading = locale === 'zh' ? '推荐阅读' : 'Recommended Reading'
 
   return (
     <SectionContainer>
@@ -61,59 +67,107 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
           </header>
-          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
-            <dl className="pt-6 pb-10 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
-              <dt className="sr-only">Authors</dt>
-              <dd>
-                <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
-                  {authorDetails.map((author) => (
-                    <li className="flex items-center space-x-2" key={author.name}>
-                      {author.avatar && (
-                        <Image
-                          src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-10 w-10 rounded-full"
-                        />
-                      )}
-                      <dl className="text-sm leading-5 font-medium whitespace-nowrap">
-                        <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
-                        <dd>
-                          {author.twitter && (
-                            <Link
-                              href={author.twitter}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            >
-                              {author.twitter
-                                .replace('https://twitter.com/', '@')
-                                .replace('https://x.com/', '@')}
-                            </Link>
+          <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-[220px_minmax(0,1fr)_220px] xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
+            <aside className="pt-6 pb-10 text-sm leading-5 xl:col-span-1 xl:row-span-2 xl:border-b xl:border-gray-200 xl:pt-11 xl:pb-0 xl:dark:border-gray-700">
+              <div className="space-y-10 xl:sticky xl:top-32 xl:h-fit">
+                <dl>
+                  <dt className="sr-only">Authors</dt>
+                  <dd>
+                    <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
+                      {authorDetails.map((author) => (
+                        <li className="flex items-center space-x-2" key={author.name}>
+                          {author.avatar && (
+                            <Image
+                              src={author.avatar}
+                              width={38}
+                              height={38}
+                              alt="avatar"
+                              className="h-10 w-10 rounded-full"
+                            />
                           )}
-                        </dd>
-                      </dl>
-                    </li>
-                  ))}
-                </ul>
-              </dd>
-            </dl>
-            <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
-              <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
-              <div className="pt-6 pb-6 text-sm text-gray-700 dark:text-gray-300">
-                <Link href={discussUrl(path)} rel="nofollow">
-                  Discuss on Twitter
-                </Link>
-                {` • `}
-                <Link href={editUrl(filePath)}>View on GitHub</Link>
+                          <dl className="text-sm leading-5 font-medium whitespace-nowrap">
+                            <dt className="sr-only">Name</dt>
+                            <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                            <dt className="sr-only">Twitter</dt>
+                            <dd>
+                              {author.twitter && (
+                                <Link
+                                  href={author.twitter}
+                                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                                >
+                                  {author.twitter
+                                    .replace('https://twitter.com/', '@')
+                                    .replace('https://x.com/', '@')}
+                                </Link>
+                              )}
+                            </dd>
+                          </dl>
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </dl>
+                {tags && tags.length > 0 && (
+                  <div>
+                    <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                      Tags
+                    </h2>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <Tag key={tag} text={tag} locale={locale} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+                <TableOfContents toc={toc} locale={locale} />
+                <div>
+                  <Link
+                    href={`/${basePath}`}
+                    locale={locale}
+                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                    aria-label="Back to the blog"
+                  >
+                    &larr; Back to the blog
+                  </Link>
+                </div>
               </div>
+            </aside>
+            <div className="divide-y divide-gray-200 xl:col-span-1 xl:col-start-2 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
+              <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
               {siteMetadata.comments && (
                 <div
                   className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300"
                   id="comment"
                 >
                   <Comments slug={slug} />
+                </div>
+              )}
+              {recommendations.length > 0 && (
+                <div className="space-y-4 pt-6">
+                  <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                    {recommendationsHeading}
+                  </h2>
+                  <ul className="grid gap-4 sm:grid-cols-2">
+                    {recommendations.map((post) => (
+                      <li
+                        key={`footer-${post.path}`}
+                        className="hover:border-primary-500 dark:hover:border-primary-400 rounded-lg border border-gray-200 p-4 transition-colors dark:border-gray-700"
+                      >
+                        <Link
+                          href={`/${post.path}`}
+                          locale={locale}
+                          className="hover:text-primary-600 dark:hover:text-primary-400 text-base font-semibold text-gray-900 dark:text-gray-100"
+                        >
+                          {post.title}
+                        </Link>
+                        {post.summary && (
+                          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                            {post.summary}
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
               {(next || prev) && (
@@ -145,32 +199,27 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </nav>
               )}
             </div>
-            <aside className="pt-6 text-sm leading-5 font-medium xl:col-span-1 xl:row-span-2 xl:pt-11">
-              <div className="space-y-8 xl:sticky xl:top-32 xl:h-fit">
-                {tags && tags.length > 0 && (
-                  <div>
-                    <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                      Tags
-                    </h2>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {tags.map((tag) => (
-                        <Tag key={tag} text={tag} locale={locale} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <TableOfContents toc={toc} locale={locale} />
-                <div>
-                  <Link
-                    href={`/${basePath}`}
-                    locale={locale}
-                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                    aria-label="Back to the blog"
-                  >
-                    &larr; Back to the blog
-                  </Link>
+            <aside className="pt-6 text-sm leading-5 font-medium xl:col-span-1 xl:col-start-3 xl:row-span-2 xl:pt-11">
+              {recommendations.length > 0 && (
+                <div className="space-y-4 xl:sticky xl:top-32 xl:h-fit">
+                  <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                    {recommendationsHeading}
+                  </h2>
+                  <ul className="space-y-3">
+                    {recommendations.map((post) => (
+                      <li key={`sidebar-${post.path}`}>
+                        <Link
+                          href={`/${post.path}`}
+                          locale={locale}
+                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                        >
+                          {post.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
+              )}
             </aside>
           </div>
         </div>
