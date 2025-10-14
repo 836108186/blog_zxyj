@@ -35,13 +35,13 @@ export default function Home({ posts }: HomeProps) {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-2 sm:px-4 xl:grid xl:grid-cols-[minmax(0,1fr)_320px] xl:items-start xl:gap-12">
       {/* 标题区域 */}
-      <div className="mx-auto max-w-4xl space-y-2 pt-6 pb-4 text-center md:space-y-5 xl:col-span-2 xl:mx-0 xl:text-left">
-        <div className="flex items-center justify-center xl:justify-start">
+      <div className="mx-auto max-w-4xl space-y-2 pt-6 pb-4 text-center md:space-y-5 xl:col-span-2">
+        <div className="flex items-center justify-center">
           <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
             {t('latest')}
           </h1>
         </div>
-        <div className="flex items-center justify-center gap-3 xl:justify-start" aria-hidden="true">
+        <div className="flex items-center justify-center gap-3" aria-hidden="true">
           <span className="h-1 w-12 bg-gray-300 sm:w-16 md:w-20 dark:bg-gray-700"></span>
         </div>
         <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">{t('description')}</p>
