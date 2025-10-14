@@ -27,16 +27,18 @@ const getRecommendedPosts = (
   const uniqueCandidates = candidates.filter((post, index, array) => {
     return array.findIndex((item) => item.slug === post.slug) === index
   })
+  const localeCandidates = uniqueCandidates.filter(
+    (post) => getDocumentLocale(post.lang) === currentLocale
+  )
 
-  const scored = uniqueCandidates
+  const scored = localeCandidates
     .filter((post) => post.slug !== currentPost.slug)
     .map((post) => {
       const overlappingTags = (post.tags ?? []).reduce(
         (total, tag) => total + (currentTags.has(tag) ? 1 : 0),
         0
       )
-      const isSameLocale = getDocumentLocale(post.lang) === currentLocale
-      const score = overlappingTags * 10 + (isSameLocale ? 5 : 0)
+      const score = overlappingTags * 10 + 5
       const publishedAt = post.date ? new Date(post.date).getTime() : 0
       return {
         post,
@@ -60,7 +62,7 @@ const getRecommendedPosts = (
   }
 
   if (recommendations.length < RECOMMENDED_POST_LIMIT) {
-    for (const post of uniqueCandidates) {
+    for (const post of localeCandidates) {
       if (recommendations.length >= RECOMMENDED_POST_LIMIT) {
         break
       }
