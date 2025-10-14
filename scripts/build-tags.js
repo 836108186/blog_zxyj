@@ -4,10 +4,24 @@
 const fs = require('fs')
 const path = require('path')
 const matter = require('gray-matter')
+const { slug: slugify } = require('github-slugger')
 
 const ROOT = process.cwd()
 const BLOG_DIR = path.join(ROOT, 'data', 'blog')
-const OUTPUT = path.join(ROOT, 'app', 'tag-data.json')
+const TAG_OUTPUT = path.join(ROOT, 'app', 'tag-data.json')
+const BLOG_LOCALE_OUTPUT = path.join(ROOT, 'app', 'blog-locale-map.json')
+const siteMetadata = require(path.join(ROOT, 'data', 'siteMetadata.js'))
+
+const SUPPORTED_CONTENT_LOCALES = new Set(
+  Array.isArray(siteMetadata?.locales)
+    ? siteMetadata.locales.map((locale) => String(locale).toLowerCase())
+    : ['zh', 'en']
+)
+const DEFAULT_CONTENT_LOCALE = String(siteMetadata?.defaultLocale || 'zh')
+  .toLowerCase()
+  .startsWith('zh')
+  ? 'zh'
+  : 'en'
 
 function ensureDir(p) {
   if (!fs.existsSync(p)) {
@@ -33,29 +47,56 @@ function main() {
 
   const files = walk(BLOG_DIR)
   const tagsMap = new Map()
+  const blogLocaleMap = {}
 
   for (const file of files) {
     const src = fs.readFileSync(file, 'utf8')
     const { data } = matter(src)
     const tags = Array.isArray(data?.tags) ? data.tags.filter(Boolean) : []
-    if (tags.length === 0) continue
-    const locale =
-      typeof data?.lang === 'string' && data.lang.toLowerCase().startsWith('zh') ? 'zh' : 'en'
-
-    const slug = path
+    const relativePath = path
       .relative(BLOG_DIR, file)
       .replace(/\\/g, '/')
       .replace(/\.(md|mdx)$/i, '')
 
-    const title = typeof data.title === 'string' ? data.title : slug
+    const segments = relativePath.split('/').filter(Boolean)
+    const localeSegment =
+      segments.length > 0 && SUPPORTED_CONTENT_LOCALES.has(segments[0].toLowerCase())
+        ? segments[0].toLowerCase()
+        : null
 
-    for (const tag of tags) {
-      const key = String(tag)
-      const recKey = `${locale}::${key}`
-      const rec = tagsMap.get(recKey) || { count: 0, posts: [], locale, tag: key }
-      rec.count += 1
-      rec.posts.push({ slug, title })
-      tagsMap.set(recKey, rec)
+    const slugSegments = localeSegment ? segments.slice(1) : segments
+    const postSlug = slugSegments.join('/')
+
+    const title = typeof data.title === 'string' ? data.title : postSlug
+
+    let locale = DEFAULT_CONTENT_LOCALE
+    if (typeof data?.lang === 'string') {
+      const lowerLang = data.lang.toLowerCase()
+      if (lowerLang.startsWith('zh')) {
+        locale = 'zh'
+      } else if (lowerLang.startsWith('en')) {
+        locale = 'en'
+      }
+    } else if (localeSegment) {
+      locale = localeSegment
+    } else {
+      locale = 'en'
+    }
+
+    if (tags.length > 0) {
+      for (const tag of tags) {
+        const key = slugify(String(tag))
+        const recKey = `${locale}::${key}`
+        const rec = tagsMap.get(recKey) || { count: 0, posts: [], locale, tag: key }
+        rec.count += 1
+        rec.posts.push({ slug: postSlug, title })
+        tagsMap.set(recKey, rec)
+      }
+    }
+
+    if (postSlug) {
+      const locales = blogLocaleMap[postSlug] || (blogLocaleMap[postSlug] = new Set())
+      locales.add(locale)
     }
   }
 
@@ -65,10 +106,28 @@ function main() {
     localeEntries[rec.tag] = rec.count
   }
 
-  ensureDir(path.dirname(OUTPUT))
-  fs.writeFileSync(OUTPUT, JSON.stringify(localeMap, null, 2), 'utf8')
+  ensureDir(path.dirname(TAG_OUTPUT))
+  fs.writeFileSync(TAG_OUTPUT, `${JSON.stringify(localeMap, null, 2)}\n`, 'utf8')
+
+  const normalizedBlogLocaleMap = Object.keys(blogLocaleMap)
+    .sort()
+    .reduce((acc, key) => {
+      acc[key] = Array.from(blogLocaleMap[key]).sort()
+      return acc
+    }, {})
+
+  ensureDir(path.dirname(BLOG_LOCALE_OUTPUT))
+  fs.writeFileSync(
+    BLOG_LOCALE_OUTPUT,
+    `${JSON.stringify(normalizedBlogLocaleMap, null, 2)}\n`,
+    'utf8'
+  )
+
   console.log(
-    `Wrote ${OUTPUT} with ${Object.values(localeMap).reduce((acc, v) => acc + Object.keys(v).length, 0)} tags from ${files.length} posts`
+    `Wrote ${TAG_OUTPUT} with ${Object.values(localeMap).reduce((acc, v) => acc + Object.keys(v).length, 0)} tags from ${files.length} posts`
+  )
+  console.log(
+    `Wrote ${BLOG_LOCALE_OUTPUT} with ${Object.keys(normalizedBlogLocaleMap).length} blog slugs`
   )
 }
 
