@@ -100,6 +100,7 @@ export async function generateMetadata(props: {
     return
   }
 
+  const keywords = Array.isArray(post.keywords) ? post.keywords.filter(Boolean) : []
   const site = getSiteMetadata(post.lang)
   const normalizedSiteUrl = site.siteUrl.replace(/\/+$/, '')
   const postPath = `blog/${post.slug}`
@@ -122,6 +123,7 @@ export async function generateMetadata(props: {
   return {
     title: post.title,
     description: post.summary,
+    keywords: keywords.length > 0 ? keywords : undefined,
     openGraph: {
       title: post.title,
       description: post.summary,
