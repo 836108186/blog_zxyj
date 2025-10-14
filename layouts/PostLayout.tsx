@@ -67,7 +67,7 @@ export default function PostLayout({
         </div>
       </header>
       <div className="space-y-10 xl:grid xl:grid-cols-[260px_minmax(0,1fr)_320px] xl:items-start xl:gap-12 xl:space-y-0">
-        <aside className="pt-6 pb-10 text-sm leading-5 xl:sticky xl:top-32 xl:h-fit xl:border-r xl:border-gray-200 xl:pt-0 xl:pr-8 xl:pb-0 xl:dark:border-gray-700">
+        <aside className="pt-6 pb-10 text-sm leading-5 xl:h-fit xl:border-r xl:border-gray-200 xl:pt-0 xl:pr-8 xl:pb-0 xl:dark:border-gray-700">
           <div className="space-y-10">
             <dl>
               <dt className="sr-only">Authors</dt>
@@ -198,24 +198,24 @@ export default function PostLayout({
           )}
         </article>
         {recommendations.length > 0 && (
-          <aside className="hidden text-sm leading-5 xl:sticky xl:top-32 xl:col-start-3 xl:block xl:h-fit xl:w-full xl:max-w-xs">
+          <aside className="hidden text-sm leading-5 xl:col-start-3 xl:block xl:h-fit xl:w-full xl:max-w-xs xl:border-l xl:border-gray-200 xl:pl-8 xl:dark:border-gray-700">
             <div className="space-y-6 xl:flex xl:h-fit xl:flex-col">
-              <div className="rounded-2xl border border-gray-200 bg-gray-50/80 p-6 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-gray-800/70">
-                <h2 className="text-xs font-semibold tracking-wide text-gray-600 uppercase dark:text-gray-400">
+              <div className="space-y-4">
+                <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
                   {recommendationsHeading}
                 </h2>
-                <ul className="mt-4 space-y-4">
+                <ul className="space-y-4">
                   {recommendations.map((post) => (
-                    <li key={`sidebar-${post.path}`} className="group">
+                    <li key={`sidebar-${post.path}`}>
                       <Link
                         href={`/${post.path}`}
                         locale={locale}
-                        className="group-hover:text-primary-600 dark:group-hover:text-primary-400 text-base font-semibold text-gray-900 transition-colors dark:text-gray-100"
+                        className="hover:text-primary-600 dark:hover:text-primary-400 text-base font-semibold text-gray-900 transition-colors dark:text-gray-100"
                       >
                         {post.title}
                       </Link>
                       {post.summary && (
-                        <p className="mt-1 text-sm leading-6 text-gray-600 transition-colors group-hover:text-gray-700 dark:text-gray-300 dark:group-hover:text-gray-200">
+                        <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">
                           {post.summary}
                         </p>
                       )}
