@@ -12,6 +12,7 @@ import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
+import { resolveKeywords } from '@/lib/keywords'
 import { getSiteMetadata } from '@/lib/site'
 import { notFound } from 'next/navigation'
 import { getDocumentLocale, normalizeLocale } from '@/lib/i18n'
@@ -100,7 +101,7 @@ export async function generateMetadata(props: {
     return
   }
 
-  const keywords = Array.isArray(post.keywords) ? post.keywords.filter(Boolean) : []
+  const keywords = resolveKeywords(post.keywords, post.tags, post.title)
   const site = getSiteMetadata(post.lang)
   const normalizedSiteUrl = site.siteUrl.replace(/\/+$/, '')
   const postPath = `blog/${post.slug}`
