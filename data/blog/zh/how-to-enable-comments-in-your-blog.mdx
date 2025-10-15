@@ -13,7 +13,21 @@ keywords:
   ]
 summary: '之前一直想在博客里加个评论区，但不想用太复杂的系统。偶然发现 Giscus，用 GitHub 账户就能评论，而且外观和集成都很方便。这篇文章分享了我给博客添加 Giscus 评论功能的完整过程'
 ---
+
+import JsonLd from '@/components/JsonLd'
+
 ![](/blog/how-to-enable-comments-in-your-blog/cover.png)
+<Callout type="info" title="💡 快速答案（TL;DR）">
+要在 Next.js 博客中添加 Giscus 评论区，只需三步：
+
+1️⃣ 在 GitHub 上安装 <a href="https://github.com/apps/giscus" target="_blank" rel="noreferrer">Giscus App</a>；  
+2️⃣ 打开 <a href="https://giscus.app/zh-CN" target="_blank" rel="noreferrer">giscus.app</a> 选择仓库并生成脚本；  
+3️⃣ 将生成的 `<script>` 粘贴到文章模板底部。  
+
+部署后，访客即可使用 GitHub 账号在博客下方评论互动。
+</Callout>
+---
+
 ## 前言
 
 在尝试了 **Hugo** 与 **Notion** 的博客方案后，我决定自己动手搭建一个博客项目。  
@@ -26,14 +40,27 @@ summary: '之前一直想在博客里加个评论区，但不想用太复杂的�
 于是我对比了多种评论系统（如 Disqus、Utterances、Gitalk 等），最终选择了 **Giscus** —— 一个基于 GitHub Discussions 的无后端评论方案。
 以下是我为博客启用 Giscus 的完整记录与避坑指南。
 
-### 创建仓库
+## 一、创建支持 Giscus 的 GitHub 仓库
+
+<Callout type="note" title="简答">
+Giscus 依托 GitHub Discussions，因此你必须启用 Discussions 功能。
+</Callout>
 
 使用 Giscus 前，你需要先有一个 **GitHub 仓库**。
 如果你和我一样使用 **Next.js Starter Blog**，可以直接点击仓库右上角的 **“Use this template”** 来快速创建自己的博客仓库。如果没有的话就只能动动大家的小手创建一下了。
-![](/blog/how-to-enable-comments-in-your-blog/20251011151839.png)
-![](/blog/how-to-enable-comments-in-your-blog/20251011151804.png)
+![创建Github仓库](/blog/how-to-enable-comments-in-your-blog/20251011151839.png "创建Github仓库")
+![启用 Discussions 功能示例](/blog/how-to-enable-comments-in-your-blog/20251011151804.png "启用 Discussions")
 
-## 安装giscus
+<Callout type="success" title="总结">
+Discussions 启用后，Giscus 才能正常同步评论内容。
+</Callout>
+---
+
+## 二、安装 Giscus App
+
+<Callout type="note" title="简答">
+Giscus App 是连接 GitHub Discussions 与你的博客页面的“桥梁”，用于授权读写评论。
+</Callout>
 
 要让访客能发表评论，必须先在 GitHub 上安装 **Giscus App**。
 
@@ -44,27 +71,54 @@ summary: '之前一直想在博客里加个评论区，但不想用太复杂的�
    - 或 **安装在所有仓库**（如果有多个博客项目）
 4. 安装后，可在 GitHub → Settings → Applications 中重新配置。
 
-#### 参考安装过程截图：
+<Callout type="success" title="总结">
+完成授权后，你的博客即可通过giscus与仓库内的 Discussions 正常通信。
+</Callout>
 
 ![Pastedimage20251011151804](/blog/how-to-enable-comments-in-your-blog/20251011151839.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152642.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152631.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152856.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152938.png)
+---
 
-## 开启giscsus功能
+## 三、生成并嵌入 Giscus 脚本
 
-安装完成后，访问 [https://giscus.app/zh-CN](https://giscus.app/zh-CN)。
-在页面中：
+<Callout type="note" title="简答">
+在 <b>giscus.app</b> 生成脚本，将其插入文章模板底部，即可渲染评论区。
+</Callout>
 
-1. 选择你的仓库；
-2. 选择一个 **Discussion 分类**（如 “General”）；
-3. 复制自动生成的 **`<script>` 代码**；
-4. 将代码插入博客文章模板的评论区位置。
+1. 访问 [https://giscus.app/zh-CN](https://giscus.app/zh-CN)；
+2. 选择仓库；
+3. 选择 Discussion 分类（如 “General”）；
+4. 复制自动生成的 `<script>` 代码；
+5. 将其粘贴进博客模板底部
+
+示例代码：
+```html
+<script src="https://giscus.app/client.js"
+        data-repo="你的GitHub用户名/博客仓库名"
+        data-repo-id="仓库ID"
+        data-category="Github Discussions分类"
+        data-category-id="分类ID"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+```
+
 
 保存部署后，你的博客页面将自动出现一个漂亮的评论区
 ![](/blog/how-to-enable-comments-in-your-blog/20251011153346.png)
 ![](/blog/how-to-enable-comments-in-your-blog/20251011152439.png)
+
+<Callout type="success" title="总结"> 部署后评论区会出现在文章底部，并与 GitHub Discussions 实时同步。 </Callout>
 
 ## 排查常见问题
 
@@ -74,3 +128,31 @@ summary: '之前一直想在博客里加个评论区，但不想用太复杂的�
 | 评论框加载为空白            | 没启用 Discussions 功能       | 仓库 Settings → 勾选 Discussions |
 | “Error: Bad credentials”    | repo、repo_id 配置不匹配      | 到 giscus.app 重新生成配置       |
 | 页面加载慢或被屏蔽          | GitHub API 被防火墙拦截       | 可考虑用代理或 Vercel 辅助中转   |
+
+<Callout type="note" title="TIPS"> 大多数问题都与授权或配置参数有关，优先检查 repo_id 与 Discussions 设置。</Callout>
+
+
+<JsonLd
+  data={{
+    "@context": "https://schema.org",
+    "@type": ["FAQPage","HowTo"],
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "如何在 Next.js 博客中添加 Giscus 评论区？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "安装 Giscus App → 在 giscus.app 选择仓库生成脚本 → 将代码嵌入博客模板评论区即可启用。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "为什么评论区加载为空白？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "请确保 GitHub 仓库已启用 Discussions 功能，并重新生成配置代码。"
+        }
+      }
+    ]
+  }}
+/>
