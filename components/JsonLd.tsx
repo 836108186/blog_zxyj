@@ -1,14 +1,14 @@
 // components/JsonLd.tsx
 'use client'
 
-import React from 'react'
+import type { FC } from 'react'
 
-export default function JsonLd({ data }: { data: any }) {
-  return (
-    <script
-      type="application/ld+json"
-      // 注意：这里一定用 dangerouslySetInnerHTML，且做 JSON.stringify
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
-  )
+type JsonLdProps = {
+  data: Record<string, unknown>
 }
+
+const JsonLd: FC<JsonLdProps> = ({ data }) => (
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
+)
+
+export default JsonLd
