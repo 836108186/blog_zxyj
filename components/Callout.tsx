@@ -70,7 +70,7 @@ export default function Callout({
   if (type === 'tldr') {
     return (
       <div
-        className={`my-6 rounded-2xl p-6 ${cfg.bg} ${cfg.border} ${cfg.extra} ${cfg.color}`}
+        className={`not-prose my-6 rounded-2xl p-6 ${cfg.bg} ${cfg.border} ${cfg.extra} ${cfg.color}`}
       >
         <div className="flex items-center gap-3 mb-3">
           {cfg.icon}
@@ -86,7 +86,7 @@ export default function Callout({
   // 其他类型继承原样式
   return (
     <div
-      className={`my-6 flex flex-col gap-2 rounded-xl p-4 shadow-sm ${cfg.bg} ${cfg.border} ${cfg.color}`}
+      className={`not-prose my-6 flex flex-col gap-2 rounded-xl p-4 shadow-sm ${cfg.bg} ${cfg.border} ${cfg.color}`}
     >
       <div className="flex items-center gap-2 font-semibold">
         {cfg.icon}
