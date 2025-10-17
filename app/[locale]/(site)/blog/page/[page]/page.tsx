@@ -1,14 +1,14 @@
 import { expandStaticParamsForLocales } from '@/lib/i18n'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
-import { getDocumentLocale, normalizeLocale } from '@/lib/i18n'
+import { getDocumentLocaleFromPost, normalizeLocale } from '@/lib/i18n'
 
 const POSTS_PER_PAGE = 5
 
 const getLocalizedPosts = (locale?: string) => {
   const targetLocale = normalizeLocale(locale)
   return allCoreContent(sortPosts(allBlogs)).filter(
-    (post) => getDocumentLocale(post.lang) === targetLocale
+    (post) => getDocumentLocaleFromPost(post) === targetLocale
   )
 }
 

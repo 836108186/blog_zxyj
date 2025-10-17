@@ -2,12 +2,12 @@ import { Authors, allAuthors } from 'contentlayer/generated'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { coreContent } from 'pliny/utils/contentlayer'
-import { Locale, getDocumentLocale } from '@/lib/i18n'
+import { Locale, getDocumentLocaleFromPost } from '@/lib/i18n'
 import { ABOUT_TITLES } from './metadata'
 
 export default function AboutPageContent({ locale }: { locale: Locale }) {
   const author = (allAuthors.find(
-    (p) => p.slug === 'default' && getDocumentLocale(p.lang) === locale
+    (p) => p.slug === 'default' && getDocumentLocaleFromPost(p) === locale
   ) ??
     allAuthors.find((p) => p.slug === 'default') ??
     allAuthors[0]) as Authors | undefined

@@ -10,7 +10,7 @@ import Tag from '@/components/Tag'
 
 import { useI18n } from '@/app/providers/I18nProvider'
 import { getTagLabel } from '@/data/tagsI18n'
-import { getDocumentLocale, stripLocaleFromPath, localizePath } from '@/lib/i18n'
+import { getDocumentLocaleFromPost, stripLocaleFromPath, localizePath } from '@/lib/i18n'
 import { getSiteMetadata } from '@/lib/site'
 
 interface PaginationProps {
@@ -86,7 +86,7 @@ export default function ListLayout({
 
   const filteredBlogPosts = useMemo(() => {
     return posts
-      .filter((post) => getDocumentLocale(post.lang) === locale)
+      .filter((post) => getDocumentLocaleFromPost(post) === locale)
       .filter((post) => {
         const searchContent = post.title + post.summary + post.tags?.join(' ')
         return searchContent.toLowerCase().includes(searchValue.toLowerCase())
@@ -95,7 +95,7 @@ export default function ListLayout({
 
   const filteredInitialPosts = useMemo(() => {
     if (!initialDisplayPosts?.length) return []
-    return initialDisplayPosts.filter((post) => getDocumentLocale(post.lang) === locale)
+    return initialDisplayPosts.filter((post) => getDocumentLocaleFromPost(post) === locale)
   }, [initialDisplayPosts, locale])
 
   const displayPosts =

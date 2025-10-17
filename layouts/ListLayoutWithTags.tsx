@@ -12,7 +12,7 @@ import tagData from 'app/tag-data.json'
 
 import { useI18n } from '@/app/providers/I18nProvider'
 import { getTagLabel } from '@/data/tagsI18n'
-import { getDocumentLocale, localizePath, stripLocaleFromPath } from '@/lib/i18n'
+import { getDocumentLocaleFromPost, localizePath, stripLocaleFromPath } from '@/lib/i18n'
 import { getSiteMetadata } from '@/lib/site'
 
 interface PaginationProps {
@@ -90,11 +90,11 @@ export default function ListLayoutWithTags({
   const sortedTags = tagKeys.sort((a, b) => localizedTagCounts[b] - localizedTagCounts[a])
 
   const filteredPosts = useMemo(
-    () => posts.filter((post) => getDocumentLocale(post.lang) === locale),
+    () => posts.filter((post) => getDocumentLocaleFromPost(post) === locale),
     [locale, posts]
   )
   const filteredInitialPosts = useMemo(
-    () => initialDisplayPosts.filter((post) => getDocumentLocale(post.lang) === locale),
+    () => initialDisplayPosts.filter((post) => getDocumentLocaleFromPost(post) === locale),
     [initialDisplayPosts, locale]
   )
 

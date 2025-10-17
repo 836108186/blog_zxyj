@@ -5,7 +5,7 @@ import { allBlogs } from 'contentlayer/generated'
 import tagData from 'app/tag-data.json'
 import { genPageMetadata } from 'app/seo'
 import { Metadata } from 'next'
-import { getDocumentLocale, normalizeLocale, resolveLocaleParam } from '@/lib/i18n'
+import { getDocumentLocaleFromPost, normalizeLocale, resolveLocaleParam } from '@/lib/i18n'
 import { getSiteMetadata } from '@/lib/site'
 
 const POSTS_PER_PAGE = 5
@@ -56,7 +56,7 @@ export default async function TagPage(props: {
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
   const filteredPosts = allCoreContent(
     sortPosts(allBlogs.filter((post) => post.tags && post.tags.map((t) => slug(t)).includes(tag)))
-  ).filter((post) => getDocumentLocale(post.lang) === locale)
+  ).filter((post) => getDocumentLocaleFromPost(post) === locale)
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / POSTS_PER_PAGE))
   const initialDisplayPosts = filteredPosts.slice(0, POSTS_PER_PAGE)
   const pagination = {
