@@ -1,5 +1,5 @@
 // components/Callout.tsx
-import { ReactNode } from 'react'
+import { ReactNode,ReactElement } from 'react'
 import {
   Info,
   CheckCircle2,
@@ -13,7 +13,7 @@ type CalloutType = 'info' | 'success' | 'warning' | 'note' | 'tldr'
 const typeConfig: Record<
   CalloutType,
   {
-    icon: JSX.Element
+    icon: ReactElement
     color: string
     border: string
     bg: string
