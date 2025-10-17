@@ -1,0 +1,166 @@
+---
+title: How to Add a Giscus Comment Section to Your Next.js Blog (Complete Guide)
+lang: 'en'
+date: '2025-10-17'
+tags: ['Next.js', 'Tailwind', 'Giscus', 'Blog']
+keywords:
+  [
+    'Next.js blog comments',
+    'Giscus integration guide',
+    'GitHub Discussions comments',
+    'Add comments to Next.js blog',
+    'Giscus setup tutorial'
+  ]
+summary: 'I’ve always wanted to add a comment section to my blog but didn’t want a complicated system. Then I discovered Giscus — a lightweight, GitHub-powered comment solution that’s easy to integrate and looks great. Here’s a complete step-by-step guide on how I added Giscus to my Next.js blog.'
+---
+
+import JsonLd from '@/components/JsonLd'
+
+![](/blog/how-to-enable-comments-in-your-blog/cover.png)
+<Callout type="info" title="💡 Quick Answer (TL;DR)">
+To add a **Giscus comment section** to your **Next.js blog**, just follow three simple steps:
+
+1️⃣ Install the <a href="https://github.com/apps/giscus" target="_blank" rel="noreferrer">Giscus App</a> on GitHub;  
+2️⃣ Visit <a href="https://giscus.app" target="_blank" rel="noreferrer">giscus.app</a>, select your repository, and generate the script;  
+3️⃣ Paste the generated `<script>` tag at the bottom of your article layout.  
+
+Once deployed, visitors can comment on your blog using their GitHub accounts.
+</Callout>
+
+---
+
+## Introduction
+
+After experimenting with **Hugo** and **Notion** for blogging, I decided to build my own blog project from scratch.  
+Here’s the repo 👉 [https://github.com/836108186/blog_zxyj](https://github.com/836108186/blog_zxyj)
+
+Once I got the basics running using **Tailwind + Next.js Starter Blog**, I quickly realized something:
+
+> A blog without comments just feels a bit lonely — there’s no real conversation happening.
+
+So, I compared several comment systems (like Disqus, Utterances, and Gitalk) and finally settled on **Giscus** — a backend-free comment system powered by GitHub Discussions.  
+Here’s my full setup guide and some pitfalls I ran into.
+
+---
+
+## 1. Create a GitHub Repository with Discussions Enabled
+
+<Callout type="note" title="Quick Tip">
+Giscus relies on **GitHub Discussions**, so you must enable the Discussions feature in your repo.
+</Callout>
+
+Before using Giscus, make sure you have a **GitHub repository** ready.  
+If you’re using **Next.js Starter Blog**, simply click **“Use this template”** at the top right of the repo to create your own blog.  
+Otherwise, just create a new repo manually — it’s quick.
+
+![Create GitHub Repo](/blog/how-to-enable-comments-in-your-blog/20251011151839.png "Create GitHub Repo")  
+![Enable Discussions](/blog/how-to-enable-comments-in-your-blog/20251011151804.png "Enable Discussions")
+
+<Callout type="success" title="Summary">
+Once Discussions are enabled, Giscus can properly sync comment threads between your blog and GitHub.
+</Callout>
+
+---
+
+## 2. Install the Giscus App
+
+<Callout type="note" title="Quick Tip">
+The Giscus App acts as a bridge between your blog and GitHub Discussions, authorizing comment reading and writing.
+</Callout>
+
+To allow visitors to post comments, you must install the **Giscus App** on GitHub.
+
+1. Visit [https://github.com/apps/giscus](https://github.com/apps/giscus)  
+2. Click **Install** (or **Configure** if you already have it installed);  
+3. Select the repository you want to use for comments.  
+
+After installation, Giscus gains permission to create and manage discussion threads under your repo’s Discussions tab.
+
+---
+
+## 3. Generate the Giscus Script
+
+Go to [https://giscus.app](https://giscus.app), and you’ll see a configuration generator.  
+Here’s what you need to do:
+
+- Select your repo (e.g., `username/blog-repo`);  
+- Choose “Discussions” as the category;  
+- Adjust your theme and language;  
+- Copy the generated `<script>` code.
+
+You’ll later paste this snippet into your blog’s article template.
+
+---
+
+## 4. Add the Giscus Script to Your Next.js Blog
+
+Open your blog project (e.g., based on `Next.js Starter Blog`) and locate the component that renders post content — typically `components/Comments.tsx` or the bottom of your post layout file.
+
+Paste your `<script>` snippet there. Example:
+
+```tsx
+  <script
+    src="https://giscus.app/client.js"
+    data-repo="yourname/yourrepo"
+    data-repo-id="repo id"
+    data-category="General"
+    data-category-id="Category ID"
+    data-mapping="pathname"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-theme="preferred_color_scheme"
+    crossorigin="anonymous"
+    async
+  ></script>
+```
+Once saved, deploy your site again.
+Now your blog posts should display a comment section that connects directly to GitHub Discussions.
+
+![](/blog/how-to-enable-comments-in-your-blog/20251011153346.png)
+![](/blog/how-to-enable-comments-in-your-blog/20251011152439.png)
+
+<Callout type="success" title="Summary">
+After deployment, the comment section will appear at the bottom of your post  
+and sync in real time with your GitHub Discussions.
+</Callout>
+
+## 5. Common Issues & Tips
+
+### ❌ Giscus not showing up?
+- Double-check that the **repository** and **category IDs** match.  
+- Ensure your blog domain is listed under “allowed origins” in the Giscus app settings.  
+
+### 🌓 Dark mode issues?
+- Use `data-theme="preferred_color_scheme"` to automatically switch themes based on the user’s system preference.
+
+### 🔐 Permissions error?
+- Reinstall the Giscus App and make sure it has access to your comment repo.
+<Callout type="note" title="TIPS">
+Most issues are related to authorization or configuration settings.  
+Double-check your `repo_id` and Discussions configuration first.
+</Callout>
+
+<JsonLd
+  data={{
+    "@context": "https://schema.org",
+    "@type": ["FAQPage", "HowTo"],
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How to add a Giscus comment section to a Next.js blog?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Install the Giscus App → generate the script from giscus.app → embed the code into your blog’s comment template to enable comments."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is the comment section not showing up?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Make sure your GitHub repository has Discussions enabled and regenerate the Giscus configuration script."
+        }
+      }
+    ]
+  }}
+/>

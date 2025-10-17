@@ -1,6 +1,9 @@
 {
   "en": {
-    "blog": 1,
+    "nextjs": 1,
+    "tailwind": 1,
+    "giscus": 1,
+    "blog": 2,
     "welcome": 1,
     "i18n": 1
   },
