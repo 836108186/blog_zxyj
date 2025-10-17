@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 
 import { DEFAULT_LOCALE, Locale, getLocaleFromPath, normalizeLocale } from '@/lib/i18n'
 
@@ -85,6 +85,7 @@ type I18nProviderProps = {
 
 export function I18nProvider({ children, initialLocale }: I18nProviderProps) {
   const pathname = usePathname()
+  const params = useParams()
   const [locale, setLocaleState] = useState<Locale>(() => {
     if (initialLocale) {
       return normalizeLocale(initialLocale)
@@ -108,9 +109,20 @@ export function I18nProvider({ children, initialLocale }: I18nProviderProps) {
     [updateLocale]
   )
 
+  const localeFromParams = useMemo(() => {
+    if (!params || typeof params !== 'object') return null
+    const raw = (params as Record<string, string | string[] | undefined>).locale
+    if (!raw) return null
+    return Array.isArray(raw) ? (raw[0] ?? null) : raw
+  }, [params])
+
   useEffect(() => {
+    if (localeFromParams) {
+      updateLocale(normalizeLocale(localeFromParams))
+      return
+    }
     updateLocaleFromPath(pathname)
-  }, [pathname, updateLocaleFromPath])
+  }, [localeFromParams, pathname, updateLocale, updateLocaleFromPath])
 
   useEffect(() => {
     if (typeof document !== 'undefined') {

@@ -30,6 +30,33 @@ export function getDocumentLocale(input?: string | null): Locale {
   return normalizeLocale(input, 'en')
 }
 
+type LocaleAwareEntry = {
+  lang?: string | null
+  path?: string | null
+}
+
+export function getDocumentLocaleFromPost(entry?: LocaleAwareEntry | null): Locale {
+  if (entry) {
+    const { lang, path } = entry
+    if (typeof lang === 'string') {
+      const lower = lang.toLowerCase()
+      if (lower.startsWith('zh')) {
+        return 'zh'
+      }
+      if (lower === 'en' || lower.startsWith('en-')) {
+        return 'en'
+      }
+    }
+
+    if (typeof path === 'string' && path.length > 0) {
+      const normalizedPath = path.startsWith('/') ? path : `/${path}`
+      return getLocaleFromPath(normalizedPath)
+    }
+  }
+
+  return 'en'
+}
+
 export function getLocaleFromPath(pathname?: string | null): Locale {
   if (!pathname) return DEFAULT_LOCALE
   const segments = pathname.split('/').filter(Boolean)

@@ -7,7 +7,7 @@ import { useI18n } from '@/app/providers/I18nProvider'
 import { slug as slugify } from 'github-slugger'
 import tagData from 'app/tag-data.json'
 import { getTagLabel } from '@/data/tagsI18n'
-import { getDocumentLocale } from '@/lib/i18n'
+import { getDocumentLocaleFromPost } from '@/lib/i18n'
 import { getSiteMetadata } from '@/lib/site'
 import type { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
@@ -26,7 +26,7 @@ export default function Home({ posts }: HomeProps) {
   const tagKeys = Object.keys(localizedTagCounts)
   const sortedTags = tagKeys.sort((a, b) => localizedTagCounts[b] - localizedTagCounts[a])
 
-  const filteredPosts = posts.filter((post) => getDocumentLocale(post.lang) === locale)
+  const filteredPosts = posts.filter((post) => getDocumentLocaleFromPost(post) === locale)
   const recommendedPosts =
     filteredPosts.length > MAX_DISPLAY
       ? filteredPosts.slice(MAX_DISPLAY, MAX_DISPLAY + 5)

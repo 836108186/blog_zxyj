@@ -15,7 +15,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { resolveKeywords } from '@/lib/keywords'
 import { getSiteMetadata } from '@/lib/site'
 import { notFound } from 'next/navigation'
-import { getDocumentLocale, normalizeLocale } from '@/lib/i18n'
+import { getDocumentLocaleFromPost, normalizeLocale } from '@/lib/i18n'
 
 const RECOMMENDED_POST_LIMIT = 4
 
@@ -24,12 +24,12 @@ const getRecommendedPosts = (
   candidates: CoreContent<Blog>[]
 ): CoreContent<Blog>[] => {
   const currentTags = new Set(currentPost.tags ?? [])
-  const currentLocale = getDocumentLocale(currentPost.lang)
+  const currentLocale = getDocumentLocaleFromPost(currentPost)
   const uniqueCandidates = candidates.filter((post, index, array) => {
     return array.findIndex((item) => item.slug === post.slug) === index
   })
   const localeCandidates = uniqueCandidates.filter(
-    (post) => getDocumentLocale(post.lang) === currentLocale
+    (post) => getDocumentLocaleFromPost(post) === currentLocale
   )
 
   const scored = localeCandidates
@@ -155,7 +155,7 @@ export async function generateMetadata(props: {
 export const getBlogStaticParams = (locale?: string) => {
   const targetLocale = normalizeLocale(locale)
   return allBlogs
-    .filter((post) => getDocumentLocale(post.lang) === targetLocale)
+    .filter((post) => getDocumentLocaleFromPost(post) === targetLocale)
     .map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
 }
 
@@ -173,9 +173,9 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
     return notFound()
   }
 
-  const targetLocale = getDocumentLocale(post.lang)
+  const targetLocale = getDocumentLocaleFromPost(post)
   const localeCoreContents = sortedCoreContents.filter(
-    (entry) => getDocumentLocale(entry.lang) === targetLocale
+    (entry) => getDocumentLocaleFromPost(entry) === targetLocale
   )
   const postIndex = localeCoreContents.findIndex((p) => p.slug === slug)
   if (postIndex === -1) {
