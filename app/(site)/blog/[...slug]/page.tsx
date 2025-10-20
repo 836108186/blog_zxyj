@@ -15,9 +15,29 @@ import siteMetadata from '@/data/siteMetadata'
 import { resolveKeywords } from '@/lib/keywords'
 import { getSiteMetadata } from '@/lib/site'
 import { notFound } from 'next/navigation'
-import { getDocumentLocaleFromPost, normalizeLocale } from '@/lib/i18n'
+import { DEFAULT_LOCALE, getDocumentLocaleFromPost, normalizeLocale } from '@/lib/i18n'
 
 const RECOMMENDED_POST_LIMIT = 4
+
+type RouteParams = { slug: string[]; locale?: string }
+
+const findLocalizedPost = (slug: string, locale?: string | null): Blog | undefined => {
+  const candidates = allBlogs.filter((entry) => entry.slug === slug)
+  if (candidates.length === 0) return undefined
+
+  const targetLocale = locale ? normalizeLocale(locale) : null
+  if (targetLocale) {
+    const localized = candidates.find((entry) => getDocumentLocaleFromPost(entry) === targetLocale)
+    if (localized) {
+      return localized
+    }
+  }
+
+  const defaultCandidate = candidates.find(
+    (entry) => getDocumentLocaleFromPost(entry) === DEFAULT_LOCALE
+  )
+  return defaultCandidate ?? candidates[0]
+}
 
 const getRecommendedPosts = (
   currentPost: CoreContent<Blog>,
@@ -87,11 +107,11 @@ const layouts = {
 }
 
 export async function generateMetadata(props: {
-  params: Promise<{ slug: string[] }>
+  params: Promise<RouteParams>
 }): Promise<Metadata | undefined> {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
-  const post = allBlogs.find((p) => p.slug === slug)
+  const post = findLocalizedPost(slug, params.locale)
   const authorList = post?.authors || ['default']
   const authorDetails = authorList.map((author) => {
     const authorResults = allAuthors.find((p) => p.slug === author)
@@ -163,12 +183,12 @@ export const generateStaticParams = async () => {
   return getBlogStaticParams()
 }
 
-export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
+export default async function Page(props: { params: Promise<RouteParams> }) {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
   // Filter out drafts in production
   const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
-  const post = allBlogs.find((p) => p.slug === slug) as Blog
+  const post = findLocalizedPost(slug, params.locale)
   if (!post) {
     return notFound()
   }
