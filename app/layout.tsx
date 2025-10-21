@@ -11,6 +11,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
+import Script from 'next/script'
 import I18nProvider from './providers/I18nProvider'
 import { getSiteMetadata } from '@/lib/site'
 import { isLocale, normalizeLocale } from '@/lib/i18n'
@@ -84,43 +85,59 @@ export default async function RootLayout({
       className={`${space_grotesk.variable} scroll-smooth`}
       suppressHydrationWarning
     >
-      <link
-        rel="apple-touch-icon"
-        sizes="76x76"
-        href={`${basePath}/static/favicons/apple-touch-icon.jpg`}
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href={`${basePath}/static/favicons/favicon-32x32.jpg`}
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="16x16"
-        href={`${basePath}/static/favicons/favicon-16x16.jpg`}
-      />
-      <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
-      <link rel="mask-icon" href={`${basePath}/static/favicons/avatar.jpg`} color="#5bbad5" />
-      <meta name="msapplication-TileColor" content="#000000" />
-      <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
-      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
-      {rssFeedUrl ? (
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title={`${localizedMetadata.title} RSS Feed`}
-          href={rssFeedUrl}
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-EX9BR7F9VW"
+          strategy="afterInteractive"
         />
-      ) : (
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EX9BR7F9VW');
+`}
+        </Script>
         <link
-          rel="alternate"
-          type="application/rss+xml"
-          title={`${localizedMetadata.title} RSS Feed`}
-          href={`${basePath}/feed.xml`}
+          rel="apple-touch-icon"
+          sizes="76x76"
+          href={`${basePath}/static/favicons/apple-touch-icon.jpg`}
         />
-      )}
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href={`${basePath}/static/favicons/favicon-32x32.jpg`}
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href={`${basePath}/static/favicons/favicon-16x16.jpg`}
+        />
+        <link rel="manifest" href={`${basePath}/static/favicons/site.webmanifest`} />
+        <link rel="mask-icon" href={`${basePath}/static/favicons/avatar.jpg`} color="#5bbad5" />
+        <meta name="msapplication-TileColor" content="#000000" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+        {rssFeedUrl ? (
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={`${localizedMetadata.title} RSS Feed`}
+            href={rssFeedUrl}
+          />
+        ) : (
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={`${localizedMetadata.title} RSS Feed`}
+            href={`${basePath}/feed.xml`}
+          />
+        )}
+      </head>
       <body className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white">
         <I18nProvider initialLocale={initialLocale}>
           <ThemeProviders>
