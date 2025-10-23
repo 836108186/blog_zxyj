@@ -122,6 +122,7 @@ export default async function RootLayout({
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+        <meta name="msvalidate.01" content="6A493FCDEB6F26EBF64F5E70560E7B12" />
         {rssFeedUrl ? (
           <link
             rel="alternate"
