@@ -1,63 +1,63 @@
 ---
-title: "Markdown 写作方法与技巧：轻量标记语言实战"
-type: "Blog"
-lang: "zh"
-date: "2025-10-23"
-tags: ["Markdown", "写作指南"]
-keywords: [
-    "Markdown 教程", 
-    "Markdown 语法", 
-    "Markdown 写作指南"
-    ]
-summary: "全面梳理 Markdown 的语法与用法，从段落、标题到代码块与扩展语法，助你高效写作与博客排版"
+title: Markdown 写作方法与技巧：轻量标记语言实战
+lang: zh
+date: '2025-10-23'
 draft: true
+tags:
+  - Markdown
+  - 写作指南
+keywords:
+  - Markdown 教程
+  - Markdown 语法
+  - Markdown 写作指南
+summary: >-
+  全面梳理 Markdown 的语法与用法，从段落、标题到代码块与扩展语法，助你高效写作与博客排版
 ---
 
 ## 前言
-其实我早该整理一下markdown,虽然在工作期间一直在使用 Markdown 写文档、笔记和博客，但从未系统地整理过它。刚好最近在梳理自己的知识体系时，正好借这个机会，重新总结一下 Markdown 的语法，也希望这篇文章对大家能有所帮助。
-## 什么是MarkDown？我们为什么要使用它呢？
-Markdown诞生于2004年，通常的文件后缀为.md或者.markdown，由约翰·格鲁伯John Gruber and [亚伦·斯沃茨](https://zh.wikipedia.org/wiki/%E4%BA%9A%E4%BC%A6%C2%B7%E6%96%AF%E6%B2%83%E8%8C%A8)Aaron Swartz
-共同合作的诞生的。
+其实我早该整理一下 Markdown。虽然在工作期间一直在使用 Markdown 写文档、笔记和博客，但从未系统地整理过它。刚好最近在梳理自己的知识体系时，正好借这个机会，重新总结一下 Markdown 的语法，也希望这篇文章对大家能有所帮助。
+
+## 什么是 Markdown？我们为什么要使用它呢？
+Markdown 诞生于 2004 年，通常的文件后缀为 `.md` 或 `.markdown`，由约翰·格鲁伯 John Gruber 和 [亚伦·斯沃茨](https://zh.wikipedia.org/wiki/%E4%BA%9A%E4%BC%A6%C2%B7%E6%96%AF%E6%B2%83%E8%8C%A8) Aaron Swartz 共同合作诞生。
+
 它的核心理念是：**让人类可读的纯文本，能直接转换为结构化的网页内容（HTML/XHTML）**。
 
-在使用MarkDown写作时，我们可以更专注于内容本身，不用担心排版、字体或者样式等细节。
-也由于Markdown的轻量化、易读易写特性，并且对于图片，图表、数学式都有支持，目前许多网站都广泛使用Markdown来撰写帮助文档或是用于[论坛](https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E8%AE%BA%E5%9D%9B "网络论坛")上发表消息。如[GitHub](https://zh.wikipedia.org/wiki/GitHub "GitHub")、[Reddit](https://zh.wikipedia.org/wiki/Reddit "Reddit")、[Discord](https://zh.wikipedia.org/wiki/Discord "Discord")、[Diaspora](https://zh.wikipedia.org/wiki/Diaspora_\(%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C\) "Diaspora (社交网络)")、[Stack Exchange](https://zh.wikipedia.org/wiki/Stack_Exchange)、[OpenStreetMap](https://zh.wikipedia.org/wiki/OpenStreetMap "OpenStreetMap") 、[SourceForge](https://zh.wikipedia.org/wiki/SourceForge "SourceForge")、[简书](https://zh.wikipedia.org/wiki/%E7%AE%80%E4%B9%A6 "简书")等等。
-同时也因为这个MarkDown的语义化结构特性而被广泛应用于LLM（大语言模型）当中，顺带一提本篇文章就是基于obsidian编写的。
+在使用 Markdown 写作时，我们可以更专注于内容本身，不用担心排版、字体或者样式等细节。也由于 Markdown 的轻量化、易读易写特性，并且对于图片、图表、数学式都有支持，目前许多网站都广泛使用 Markdown 来撰写帮助文档或是用于 [论坛](https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E8%AE%BA%E5%9D%9B "网络论坛") 上发表消息。如 [GitHub](https://zh.wikipedia.org/wiki/GitHub "GitHub")、[Reddit](https://zh.wikipedia.org/wiki/Reddit "Reddit")、[Discord](https://zh.wikipedia.org/wiki/Discord "Discord")、[Diaspora](https://zh.wikipedia.org/wiki/Diaspora_\(%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C\) "Diaspora (社交网络)")、[Stack Exchange](https://zh.wikipedia.org/wiki/Stack_Exchange)、[OpenStreetMap](https://zh.wikipedia.org/wiki/OpenStreetMap "OpenStreetMap")、[SourceForge](https://zh.wikipedia.org/wiki/SourceForge "SourceForge")、[简书](https://zh.wikipedia.org/wiki/%E7%AE%80%E4%B9%A6 "简书")等等。同时也因为 Markdown 的语义化结构特性而被广泛应用于 LLM（大语言模型）当中，顺带一提本篇文章就是基于 Obsidian 编写的。
 
-## Markdown的语法
+## Markdown 的语法
 ### 段落与换行符
-**段落（Paragraph）** 和 **换行（Line Break）** 有些时候在使用长看起来没有什么区别，但是在渲染的时候会有一些区别，理解好这两个可以在渲染的排版时让文字看起来更有层次和逻辑
-### 段落Paragraph
+**段落（Paragraph）** 和 **换行（Line Break）** 有些时候在使用上看起来没有什么区别，但是在渲染的时候会有一些差异，理解好这两个概念可以在排版时让文字看起来更有层次和逻辑。
+
+### 段落 Paragraph
 一个段落由 **一行或多行连续文本** 组成，与下一个段落之间 **必须空一行** 才能被识别为新的段落。
 
 ```markdown
-这是第一行  
+这是第一行
 
 这是第二行
 ```
+
 其对应的 HTML 结构是：
-![](/blog/how-to-enable-comments-in-your-blog/cover.png)
+![段落示例封面](/blog/how-to-enable-comments-in-your-blog/cover.png)
 
-![创建Github仓库](/blog/how-to-enable-comments-in-your-blog/20251011151839.png "创建Github仓库")
-
+![创建 Github 仓库](/blog/how-to-enable-comments-in-your-blog/20251011151839.png "创建 Github 仓库")
 
 ### 换行符（Line Break）
-如果我们想在同意段落中换行，而不是另外起一个段落的化，就需要在行尾加上两个空格加上回车，这样就会生成一个标签 `<br>`
+如果我们想在同一段落中换行，而不是另外起一个段落，就需要在行尾加上两个空格加上回车，这样就会生成一个 `<br>` 标签。
 
 ```markdown
 这是第一行  
 这是第二行（同一段中换行）
 ```
-其对应的 HTML 结构是:
-![paragraph.png]()
 
-<Callout type="note" title="TIPS"> 在许多所见即所得的 Markdown 编辑器中（例如 Obsidian、Typora、Notion），
-换行和段落通常会自动处理，不需要手动加空格。</Callout>
+其对应的 HTML 结构是：
+![段落换行示例](/blog/how-to-enable-comments-in-your-blog/paragraph.png "段落换行示例")
 
+<Callout type="note" title="TIPS">在许多所见即所得的 Markdown 编辑器中（例如 Obsidian、Typora、Notion），换行和段落通常会自动处理，不需要手动加空格。</Callout>
 
-### 标题Headers 
-Markdown 使用 `#` 符号来表示标题的层级，`#` 的数量决定了标题的级别，从一级标题到六级标题分别对应 HTML 中的 `<h1>` 到 `<h6>` 标签。
-当然还有一些编辑器支持在标题后面加上 `=` 或 `-` 来表示一级和二级标题。
+### 标题 Headers
+Markdown 使用 `#` 符号来表示标题的层级，`#` 的数量决定了标题的级别，从一级标题到六级标题分别对应 HTML 中的 `<h1>` 到 `<h6>` 标签。当然还有一些编辑器支持在标题后面加上 `=` 或 `-` 来表示一级和二级标题。
+
 ```markdown
 # 一级标题
 ## 二级标题
@@ -71,14 +71,11 @@ Markdown 使用 `#` 符号来表示标题的层级，`#` 的数量决定了标�
 -
 ```
 
-### 强调Emphasis
-在Markdown中，可以使用星号 `*` 或下划线 `_` 来表示强调文本。单个符号表示斜体，双符号表示粗体。
+### 强调 Emphasis
+在 Markdown 中，可以使用星号 `*` 或下划线 `_` 来表示强调文本。单个符号表示斜体，双符号表示粗体。
+
 ```markdown
 *斜体文本* 或 _斜体文本_
 **粗体文本** 或 __粗体文本__
 ***粗斜体文本*** 或 ___粗斜体文本___
 ```
-
-
-
-

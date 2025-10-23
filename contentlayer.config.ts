@@ -1,9 +1,11 @@
 import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
 import { writeFileSync } from 'fs'
+import { Buffer } from 'node:buffer'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
 import path from 'path'
 import { fromHtmlIsomorphic } from 'hast-util-from-html-isomorphic'
+import matter from 'gray-matter'
 // Remark packages
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
@@ -48,6 +50,23 @@ const BLOG_PATH_PREFIX = 'blog/'
 const DEFAULT_CONTENT_LOCALE = siteMetadata.defaultLocale?.toLowerCase().startsWith('zh')
   ? 'zh'
   : 'en'
+
+type YamlEngine = (input: unknown) => unknown
+
+const defaultYamlEngine: YamlEngine =
+  typeof matter.engines?.yaml === 'function' ? matter.engines.yaml : (value: unknown) => value
+
+const sanitizeYamlInput = (input: unknown) => {
+  if (typeof input === 'string') {
+    return input.replace(/\r/g, '')
+  }
+
+  if (typeof input === 'object' && input !== null && Buffer.isBuffer(input)) {
+    return input.toString('utf8').replace(/\r/g, '')
+  }
+
+  return input
+}
 
 function isBlogDocument(doc: { _raw: { flattenedPath: string } }) {
   return doc._raw.flattenedPath.startsWith(BLOG_PATH_PREFIX)
@@ -247,6 +266,17 @@ export default makeSource({
       [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
       rehypePresetMinify,
     ],
+    grayMatterOptions: (options) => {
+      const yamlEngine = options.engines?.yaml ?? defaultYamlEngine
+
+      return {
+        ...options,
+        engines: {
+          ...options.engines,
+          yaml: (value) => yamlEngine(sanitizeYamlInput(value)),
+        },
+      }
+    },
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
