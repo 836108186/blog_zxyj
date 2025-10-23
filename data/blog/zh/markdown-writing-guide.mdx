@@ -28,7 +28,7 @@ Markdown 诞生于 2004 年，通常的文件后缀为 `.md` 或 `.markdown`，�
 ### 段落与换行符
 **段落（Paragraph）** 和 **换行（Line Break）** 有些时候在使用上看起来没有什么区别，但是在渲染的时候会有一些差异，理解好这两个概念可以在排版时让文字看起来更有层次和逻辑。
 
-### 段落 Paragraph
+#### 段落 Paragraph
 一个段落由 **一行或多行连续文本** 组成，与下一个段落之间 **必须空一行** 才能被识别为新的段落。
 
 ```markdown
@@ -36,22 +36,22 @@ Markdown 诞生于 2004 年，通常的文件后缀为 `.md` 或 `.markdown`，�
 
 这是第二行
 ```
-
+Markdown预览
+![Makrdwown 段落预览](/blog/markdown-writing-guide/paragraph_preview.png "Makrdwown 段落预览")
 其对应的 HTML 结构是：
-![段落示例封面](/blog/how-to-enable-comments-in-your-blog/cover.png)
+![Makrdwown 段落对应html](/blog/markdown-writing-guide/paragraph.png "Makrdwown 段落对应html")
 
-![创建 Github 仓库](/blog/how-to-enable-comments-in-your-blog/20251011151839.png "创建 Github 仓库")
-
-### 换行符（Line Break）
+#### 换行符（Line Break）
 如果我们想在同一段落中换行，而不是另外起一个段落，就需要在行尾加上两个空格加上回车，这样就会生成一个 `<br>` 标签。
 
 ```markdown
 这是第一行  
 这是第二行（同一段中换行）
 ```
-
+Markdown预览
+![Makrdwown 换行预览](/blog/markdown-writing-guide/line_break_preview.png "Makrdwown 换行预览")
 其对应的 HTML 结构是：
-![段落换行示例](/blog/how-to-enable-comments-in-your-blog/paragraph.png "段落换行示例")
+![Makrdwown 换行对应html](/blog/markdown-writing-guide/line_break.png "Makrdwown 换行对应html")
 
 <Callout type="note" title="TIPS">在许多所见即所得的 Markdown 编辑器中（例如 Obsidian、Typora、Notion），换行和段落通常会自动处理，不需要手动加空格。</Callout>
 
@@ -70,7 +70,10 @@ Markdown 使用 `#` 符号来表示标题的层级，`#` 的数量决定了标�
 二级标题
 -
 ```
-
+Markdown预览
+![Makrdwown 标题预览](/blog/markdown-writing-guide/Headers_preview.png "Makrdwown 标题预览")
+其对应的 HTML 结构是：
+![Makrdwown 标题对应html](/blog/markdown-writing-guide/Headers.png "Makrdwown 标题对应html")
 ### 强调 Emphasis
 在 Markdown 中，可以使用星号 `*` 或下划线 `_` 来表示强调文本。单个符号表示斜体，双符号表示粗体。
 
@@ -79,3 +82,97 @@ Markdown 使用 `#` 符号来表示标题的层级，`#` 的数量决定了标�
 **粗体文本** 或 __粗体文本__
 ***粗斜体文本*** 或 ___粗斜体文本___
 ```
+Markdown预览
+![Makrdwown 强调预览](/blog/markdown-writing-guide/Emphasis_preview.png "Makrdwown 强调预览")
+其对应的 HTML 结构是：
+![Makrdwown 强调对应html](/blog/markdown-writing-guide/Emphasis.png "Makrdwown 强调对应html")
+
+### 反斜杠转义字符 Backslash Escape
+有时候我们需要在文本中使用 Markdown 的特殊字符（如 `*`、`#`、`_` 等），但又不希望它们被解析为 Markdown 语法，这时就可以使用反斜杠 `\` 来转义这些字符。
+
+```markdown
+这是一个星号 \*，这是一个井号 \#，这是一个下划线 \_
+```
+
+### 引用 Blockquotes
+引用使用 `>` 符号来表示，可以嵌套使用多个 `>` 来表示多级引用。
+
+```markdown
+> 这是一个引用
+>> 这是一个嵌套引用
+```
+Markdown预览
+
+
+### 列表 Lists
+Markdown 支持有序列表和无序列表。
+#### 无序列表 Unordered Lists
+无序列表使用 `-`、`*` 或 `+` 来表示。
+
+```markdown
+- 项目一
+- 项目二
+  - 子项目二点一
+  - 子项目二点二
+* 项目三
++ 项目四
+```
+Markdown预览
+其对应的 HTML 结构是：
+
+#### 有序列表 Ordered Lists
+有序列表使用数字加点（如 `1.`、`2.`）来表示。
+
+```markdown
+1. 第一项
+2. 第二项
+   1. 子项二点一
+   2. 子项二点二
+3. 第三项
+```
+Markdown预览
+其对应的 HTML 结构是：
+
+### 链接 Links
+Markdown 支持两种类型的链接：行内链接和参考链接。
+#### 行内链接 Inline Links
+行内链接的语法是 `[链接文本](链接地址 "可选标题")`。
+
+```markdown
+[访问Google](https://www.google.com "Google首页")
+```
+Markdown预览
+其对应的 HTML 结构是：
+#### 参考链接 Reference Links
+参考链接的语法是先定义链接 `[链接文本][引用标识]`，然后在文档的其他地方定义引用标识和链接地址。
+
+```markdown
+[访问Google][google]
+[google]: https://www.google.com "Google首页"
+```
+Markdown预览
+其对应的 HTML 结构是：
+
+### 代码块 Code Blocks
+Markdown 支持行内代码和代码块
+#### 行内代码 Inline Code
+行内代码使用反引号 `` ` `` 包裹。
+
+```markdown
+这是一个行内代码示例： `console.log("Hello, World!");`
+```
+Markdown预览
+其对应的 HTML 结构是：
+#### 代码块 Code Blocks
+代码块使用三个反引号 ``` 包裹，可以指定语言以启用语法高亮。
+
+```markdown
+```javascript
+console.log("Hello, World!");
+``` 
+```
+Markdown预览
+其对应的 HTML 结构是：
+
+
+
