@@ -53,8 +53,18 @@ const DEFAULT_CONTENT_LOCALE = siteMetadata.defaultLocale?.toLowerCase().startsW
 
 type YamlEngine = (input: unknown) => unknown
 
+type GrayMatterWithEngines = typeof matter & {
+  engines?: {
+    yaml?: YamlEngine
+  }
+}
+
+const matterWithEngines = matter as GrayMatterWithEngines
+
 const defaultYamlEngine: YamlEngine =
-  typeof matter.engines?.yaml === 'function' ? matter.engines.yaml : (value: unknown) => value
+  typeof matterWithEngines.engines?.yaml === 'function'
+    ? matterWithEngines.engines.yaml
+    : (value: unknown) => value
 
 const sanitizeYamlInput = (input: unknown) => {
   if (typeof input === 'string') {
