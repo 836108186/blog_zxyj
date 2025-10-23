@@ -51,21 +51,67 @@ const DEFAULT_CONTENT_LOCALE = siteMetadata.defaultLocale?.toLowerCase().startsW
   ? 'zh'
   : 'en'
 
-type YamlEngine = (input: unknown) => unknown
+type GrayMatterYamlFunction = (input: string) => unknown
 
-const defaultYamlEngine: YamlEngine =
-  typeof matter.engines?.yaml === 'function' ? matter.engines.yaml : (value: unknown) => value
+type GrayMatterYamlObject = {
+  parse: GrayMatterYamlFunction
+  stringify?: (data: object) => string
+}
 
-const sanitizeYamlInput = (input: unknown) => {
+type YamlEngine = GrayMatterYamlFunction | GrayMatterYamlObject
+
+type GrayMatterWithEngines = typeof matter & {
+  engines?: {
+    yaml?: unknown
+  }
+}
+
+const matterWithEngines = matter as GrayMatterWithEngines
+
+const isYamlEngineObject = (engine: unknown): engine is GrayMatterYamlObject => {
+  if (typeof engine !== 'object' || engine === null) {
+    return false
+  }
+
+  const maybeEngine = engine as { parse?: unknown }
+  return typeof maybeEngine.parse === 'function'
+}
+
+const coerceYamlEngine = (engine: unknown): YamlEngine => {
+  if (typeof engine === 'function') {
+    return engine as GrayMatterYamlFunction
+  }
+
+  if (isYamlEngineObject(engine)) {
+    return engine
+  }
+
+  return (value: string) => value
+}
+
+const defaultYamlEngine = coerceYamlEngine(matterWithEngines.engines?.yaml)
+
+const sanitizeYamlInput = (input: string | Buffer): string => {
   if (typeof input === 'string') {
     return input.replace(/\r/g, '')
   }
 
-  if (typeof input === 'object' && input !== null && Buffer.isBuffer(input)) {
+  if (Buffer.isBuffer(input)) {
     return input.toString('utf8').replace(/\r/g, '')
   }
 
-  return input
+  return String(input)
+}
+
+const withSanitizedYamlInput = (engine: YamlEngine): YamlEngine => {
+  if (typeof engine === 'function') {
+    return (value: string) => engine(sanitizeYamlInput(value))
+  }
+
+  return {
+    ...engine,
+    parse: (value: string) => engine.parse(sanitizeYamlInput(value)),
+  }
 }
 
 function isBlogDocument(doc: { _raw: { flattenedPath: string } }) {
@@ -267,13 +313,15 @@ export default makeSource({
       rehypePresetMinify,
     ],
     grayMatterOptions: (options) => {
-      const yamlEngine = options.engines?.yaml ?? defaultYamlEngine
+      const yamlEngine = withSanitizedYamlInput(
+        coerceYamlEngine(options.engines?.yaml ?? defaultYamlEngine)
+      )
 
       return {
         ...options,
         engines: {
           ...options.engines,
-          yaml: (value) => yamlEngine(sanitizeYamlInput(value)),
+          yaml: yamlEngine,
         },
       }
     },
