@@ -6,16 +6,24 @@ draft: true
 tags:
   - Markdown
   - 写作指南
+  - 博客优化
 keywords:
   - Markdown 教程
   - Markdown 语法
   - Markdown 写作指南
+  - GitHub Flavored Markdown
+
 summary: >-
   全面梳理 Markdown 的语法与用法，从段落、标题到代码块与扩展语法，助你高效写作与博客排版
 ---
+import JsonLd from '@/components/JsonLd'
 
+<Callout type="info" title="💡 快速答案（TL;DR）">
+这篇指南分为两个部分：第一部分介绍 **Markdown 标准语法（CommonMark）**，第二部分讲解 **扩展语法（GFM）**。如果你只想快速回忆语法，可直接跳转对应章节。
+</Callout>
 ## 前言
 其实我早该整理一下 Markdown。虽然在工作期间一直在使用 Markdown 写文档、笔记和博客，但从未系统地整理过它。刚好最近在梳理自己的知识体系时，正好借这个机会，重新总结一下 Markdown 的语法，也希望这篇文章对大家能有所帮助。
+
 
 ## 什么是 Markdown？我们为什么要使用它呢？
 Markdown 诞生于 2004 年，通常的文件后缀为 `.md` 或 `.markdown`，由约翰·格鲁伯 John Gruber 和 [亚伦·斯沃茨](https://zh.wikipedia.org/wiki/%E4%BA%9A%E4%BC%A6%C2%B7%E6%96%AF%E6%B2%83%E8%8C%A8) Aaron Swartz 共同合作诞生。
@@ -24,7 +32,21 @@ Markdown 诞生于 2004 年，通常的文件后缀为 `.md` 或 `.markdown`，�
 
 在使用 Markdown 写作时，我们可以更专注于内容本身，不用担心排版、字体或者样式等细节。也由于 Markdown 的轻量化、易读易写特性，并且对于图片、图表、数学式都有支持，目前许多网站都广泛使用 Markdown 来撰写帮助文档或是用于 [论坛](https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E8%AE%BA%E5%9D%9B "网络论坛") 上发表消息。如 [GitHub](https://zh.wikipedia.org/wiki/GitHub "GitHub")、[Reddit](https://zh.wikipedia.org/wiki/Reddit "Reddit")、[Discord](https://zh.wikipedia.org/wiki/Discord "Discord")、[Diaspora](https://zh.wikipedia.org/wiki/Diaspora_\(%E7%A4%BE%E4%BA%A4%E7%BD%91%E7%BB%9C\) "Diaspora (社交网络)")、[Stack Exchange](https://zh.wikipedia.org/wiki/Stack_Exchange)、[OpenStreetMap](https://zh.wikipedia.org/wiki/OpenStreetMap "OpenStreetMap")、[SourceForge](https://zh.wikipedia.org/wiki/SourceForge "SourceForge")、[简书](https://zh.wikipedia.org/wiki/%E7%AE%80%E4%B9%A6 "简书")等等。同时也因为 Markdown 的语义化结构特性而被广泛应用于 LLM（大语言模型）当中，顺带一提本篇文章就是基于 Obsidian 编写的。
 
-## Markdown 的语法
+## Makrdwown的标准化
+<Callout type="info" title="说明">
+本章节介绍 Markdown 的通用标准语法，也就是 CommonMark 规范。这是所有 Markdown 编辑器的基础支持。
+</Callout>
+Markdown 有许多变体。以下是一些主要的 Markdown 标准和扩展：
+- **CommonMark**：这是一个旨在标准化 Markdown 语法的项目，提供了一个明确的规范和参考实现。它解决了原始 Markdown 语法中的一些不一致性问题。
+- **GitHub Flavored Markdown (GFM)**：这是 GitHub 使用的 Markdown 变体，添加了一些特性，如任务列表、表格和自动链接等。
+- **Markdown Extra**：这是对原始 Markdown 的扩展，添加了一些额外的功能，如表格、脚注和定义列表等。
+- **MultiMarkdown**：这是对 Markdown 的进一步扩展，支持更多的格式和功能，如表格、脚注、数学公式等。
+
+
+## Markdown 的标准语法（CommonMark）
+CommonMark 是目前 Markdown 的标准化规范，解决了原始语法中的模糊与不一致问题。  
+它定义了最核心的一组规则，几乎所有编辑器都支持。
+
 ### 段落与换行符
 **段落（Paragraph）** 和 **换行（Line Break）** 有些时候在使用上看起来没有什么区别，但是在渲染的时候会有一些差异，理解好这两个概念可以在排版时让文字看起来更有层次和逻辑。
 
@@ -74,6 +96,8 @@ Markdown预览
 ![Makrdwown 标题预览](/blog/markdown-writing-guide/Headers_preview.png "Makrdwown 标题预览")
 其对应的 HTML 结构是：
 ![Makrdwown 标题对应html](/blog/markdown-writing-guide/Headers.png "Makrdwown 标题对应html")
+<Callout type="note" title="TIPS"> 博客文章中尽量使用 2～4 级标题，层级清晰、利于 SEO 抓取</Callout>
+
 ### 强调 Emphasis
 在 Markdown 中，可以使用星号 `*` 或下划线 `_` 来表示强调文本。单个符号表示斜体，双符号表示粗体。
 
@@ -101,6 +125,10 @@ Markdown预览
 > 这是一个引用
 >> 这是一个嵌套引用
 ```
+<Callout type="note" title="用途">
+引用常用于提示、引文或评论说明。
+</Callout>
+
 Markdown预览
 
 
@@ -133,6 +161,11 @@ Markdown预览
 Markdown预览
 其对应的 HTML 结构是：
 
+<Callout type="note" title="用途">
+引用常用于提示、引文或评论说明。
+</Callout>
+
+
 ### 链接 Links
 Markdown 支持两种类型的链接：行内链接和参考链接。
 #### 行内链接 Inline Links
@@ -147,10 +180,14 @@ Markdown预览
 参考链接的语法是先定义链接 `[链接文本][引用标识]`，然后在文档的其他地方定义引用标识和链接地址。
 
 ```markdown
-[访问Google][google]
-[google]: https://www.google.com "Google首页"
+gogole search[Google] [1] than from
+[Yahoo] [2] or [MSN] [3].
+  [1]: http://google.com/        "Google"
+  [2]: http://search.yahoo.com/  "Yahoo Search"
+  [3]: http://search.msn.com/    "MSN Search"
 ```
 Markdown预览
+
 其对应的 HTML 结构是：
 
 ### 代码块 Code Blocks
@@ -166,12 +203,188 @@ Markdown预览
 #### 代码块 Code Blocks
 代码块使用三个反引号 ``` 包裹，可以指定语言以启用语法高亮。
 
-```markdown
+````markdown
 ```javascript
-console.log("Hello, World!");
-``` 
+console.log("Hello Markdown!");
 ```
-Markdown预览
-其对应的 HTML 结构是：
+````
 
-### 水平线 Horizontal Rules
+<Callout type="info" title="提示">
+不同编辑器对代码高亮支持略有差异，建议指定语言类型。
+</Callout>
+
+## Markdown 扩展语法（GitHub Flavored Markdown,GFM）
+<Callout type="info" title="说明">
+以下语法为 GitHub Flavored Markdown 的扩展功能，大多数现代编辑器如 Obsidian、Typora、VS Code 等均支持。
+</Callout>
+
+### 任务列表 Task Lists
+```markdown
+- [x] 已完成任务
+- [ ] 待办任务
+```
+效果：
+- [x] 已完成任务
+- [ ] 待办任务
+
+### 表格 Tables
+```markdown
+| 语法 | 描述 |
+| ---- | ---- |
+| Header | 标题 |
+| Paragraph | 段落 |
+```
+Markdown 预览
+
+### 删除线 Strikethrough
+```markdown
+~~这是一段被删除的文本~~
+```
+效果：~~这是一段被删除的文本~~
+
+### 自动链接 Auto Links
+直接输入网址即可自动识别为链接。
+
+```markdown
+https://github.com
+```
+效果：https://github.com
+
+### Emoji 表情 Emoji
+```markdown
+:smile: :rocket: :memo:
+```
+效果：😄 🚀 📝
+
+### 语法高亮 Syntax Highlighting
+````markdown
+```python
+def hello():
+print("Hello, Markdown!")
+```
+````
+<Callout type="note" title="提示">
+GFM 支持多种语言自动语法高亮，如 JavaScript、Python、HTML 等。
+</Callout>
+---
+## 结语
+通过本文的介绍，到这也就结束了，希望对大家有所帮助
+
+## 链接
+- [Markdown 官方网站](https://daringfireball.net/projects/markdown/)
+- [CommonMark 规范](https://commonmark.org/)
+- [GitHub Flavored Markdown 规范](https://github.github.com/gfm/)
+
+<JsonLd
+  data={{
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "FAQPage",
+        "inLanguage": "zh-CN",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Markdown 中段落与换行有什么区别？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text":
+                "段落之间需要空一行才能分段；同一段内换行需要在行尾添加两个空格再回车，渲染为 <br>。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "为什么在 Markdown 里换行不生效？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text":
+                "大多数渲染器要求在行尾添加两个空格再回车才会换行；若缺少空格会被合并为同一行。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "如何创建标题层级？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text":
+                "使用 # 表示标题，# 到 ###### 分别对应 h1～h6。示例：## 二级标题。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "如何编写行内代码与多行代码块？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text":
+                "行内代码用反引号包裹，如 `code`；多行代码用三个反引号围住，并可指定语言实现高亮，例如 ```javascript ... ```。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "有序列表数字必须连续吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text":
+                "不必须。渲染时会自动按顺序编号，但建议源码中也保持有序，便于阅读与维护。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "如何写外链与参考链接？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text":
+                "行内链接：[文本](URL \"标题\")；参考链接：先写 [文本][id]，再在文末定义 [id]: URL \"标题\"。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "GFM 扩展里如何写表格与任务列表？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text":
+                "表格示例：|A|B| 并用 --- 分隔表头；任务列表示例：- [x] 已完成 / - [ ] 待办。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "如何写删除线与 Emoji？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text":
+                "删除线使用 ~~文本~~；Emoji 使用 :名称:，如 :rocket:。"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "HowTo",
+        "inLanguage": "zh-CN",
+        "name": "如何在同一段落中换行",
+        "description": "在不另起段落的前提下，实现同一段内的换行效果。",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "输入第一行文本",
+            "text": "按正常方式输入本行文字。"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "在行尾添加两个空格",
+            "text": "在本行末尾输入两个空格。"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "按回车换行",
+            "text": "按回车键到下一行，即可在同段落内产生 <br>。"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "预览确认",
+            "text": "在预览或页面中确认已出现换行效果。"
+          }
+        ]
+      }
+    ]
+  }}
+/>
