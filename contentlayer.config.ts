@@ -51,7 +51,7 @@ const DEFAULT_CONTENT_LOCALE = siteMetadata.defaultLocale?.toLowerCase().startsW
   ? 'zh'
   : 'en'
 
-type GrayMatterYamlFunction = (input: string) => unknown
+type GrayMatterYamlFunction = (input: string) => Record<string, unknown>
 
 type GrayMatterYamlObject = {
   parse: GrayMatterYamlFunction
@@ -86,7 +86,7 @@ const coerceYamlEngine = (engine: unknown): YamlEngine => {
     return engine
   }
 
-  return (value: string) => value
+  return () => ({})
 }
 
 const defaultYamlEngine = coerceYamlEngine(matterWithEngines.engines?.yaml)
